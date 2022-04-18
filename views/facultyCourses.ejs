@@ -1,0 +1,16 @@
+<%- include('partials/navbar') %>
+
+<div class="container row" style="margin: auto">
+  <% courses.forEach(function(course){ %>
+    <div class="col-sm-4">
+        <div class="box boxFac">
+            <div class="box-top boxtopFac">
+                <a class="textdec h4" href="/faculty/<%= course.coursecode%>" style="color: #363740"><%= course.coursecode%>: <%=course.coursename%></a>
+            </div>
+
+        </div>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('partials/footer') %>

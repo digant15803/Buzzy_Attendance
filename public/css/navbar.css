@@ -1,0 +1,7 @@
+.offcanvas-start{
+  width: 300px !important;
+}
+
+.navbarHeading,.offcanvasHeading,.idName{
+  font-family: cursive;
+}

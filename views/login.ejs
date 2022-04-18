@@ -1,0 +1,56 @@
+<%- include('partials/header') %>
+
+<div class="">
+        <div class="sign-up">
+            <div class="logo">
+                <img src="images/logo.png" alt="Company-logo">
+            </div>
+            <div class="">
+                <h3 class="mb-0 cursive">Buzzy Attendance</h3>
+                <p class="mt-0" style="color: gray;">Fast-forward the attendance process</p>
+            </div>
+        </div>
+        <div class="sign-in">
+            <div class="l-account">
+                <h4 class="cursive" style="margin-bottom: 2px;">Login to your account</h4>
+                <div class="card text-box mt-4">
+                    <p>Continue with google</p>
+                </div>
+                <p class="mt-4 mb-4" style="color: gray;">---or Sign In with Email---</p>
+                <form action="/" method="post">
+                    <div class="form-group">
+                        <label class="h6 mb-1" style="float: left;">Email</label>
+                        <input type="email" name="email" class="form-control text-box login" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Your Email">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="h6 mb-1" style="float: left;">Password</label>
+                        <input type="password" name="pswd" class="form-control text-box login" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <br>
+                    <div>
+                        <label class="mt-1" style="float: left;"><input type="checkbox" class="text-left"> <span class="ms-1">Remember me</span></label>
+                        <a href="#" style="float: right;">forgot password?</a>
+                        <br>
+                        <br>
+                        <p class="mt-1 text-danger" id="check"><%= incorrect%></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-danger text-box cursive" style="margin-top: 20px;">Login</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+      if(<%= incorrect %> === false){
+        document.getElementById("check").innerHTML = "";
+      }
+      else{
+        document.getElementById("check").innerHTML = "Incorrect Email or Password";
+      }
+    </script>
+</body>
+
+</html>

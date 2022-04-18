@@ -1,0 +1,42 @@
+.buzzWord-box{
+    background-color: #363740;
+}
+
+.timer{
+    height: 75px;
+    background-color: #363740;
+    border-radius: 15px;
+    padding: auto;
+    position: relative;
+    margin-left: 10px;
+}
+
+.up-buzz{
+    height: 15%;
+    width: 100%;
+    /* background-color: aquamarine; */
+    padding-top: 15px;
+    /* padding-left: 180px; */
+    margin: auto;
+    text-align: center;
+    border-bottom: 5px solid white;
+}
+
+.down-buzz{
+    height: 85%;
+    width: 100%;
+}
+
+.btnBuzz{
+    color: azure;
+    background-color:black;
+    width: 100px;
+    height: 40px;
+    border: 3px solid #ffffff !important;
+    margin: auto;
+}
+
+.btnBuzz:hover{
+    background-color: #ffffff;
+    color: #363740 !important;
+}

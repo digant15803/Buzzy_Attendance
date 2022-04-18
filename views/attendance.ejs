@@ -1,0 +1,15 @@
+<%- include('partials/navbar') -%>
+
+<br>
+<h3 class="ms-5" style="color: #363740" id="check"></h3>
+
+<script>
+  if(<%= bool %> === false){
+    document.getElementById("check").innerHTML = "You are marked Absent";
+  }
+  else{
+    document.getElementById("check").innerHTML = "You are marked Present";
+  }
+</script>
+
+<%- include('partials/footer') -%>

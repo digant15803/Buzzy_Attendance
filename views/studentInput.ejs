@@ -1,0 +1,70 @@
+<%- include('partials/navbar') -%>
+<div class="container row" style="margin-left: 215px; padding:">
+    <div class="buzzWord-box" style="width: 40%; height: 40%; border-radius: 10px; margin-top: 100px; margin-left: 100px;">
+        <div class="up-buzz">
+            <p class="h5" style="color: white; display: inline-block;">SELECT BUZZWORDS</p>
+            <p class="h5" style="color: white; display: inline-block; float: right;" id="demo">Loading..</p>
+        </div>
+        <div class="down-buzz" style="text-align: center; padding: 15px;">
+            <form action="/student/<%= courseCode%>" name="myForm" method="post">
+                <div class="row">
+
+                  <% buzzWords.forEach(function(word){ %>
+
+                    <div class="col-sm-6" style="margin-bottom: 5px;">
+                        <input class="form-check-input" type="checkbox" name="<%= word %>" value = "1" id="flexCheckDefault">
+                        <label class="form-check-label h6" for="flexCheckDefault" style="color: white;">
+                            <%= word %>
+                        </label>
+                    </div>
+                  <% }) %>
+
+
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btnBuzz" style="color: white;">Submit</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+// Set the date we're counting down to
+var t = new Date("<%= timeF%>");
+t.setSeconds(t.getSeconds() + 25);
+var countDownDate = t.getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text
+  if (distance <= 0) {
+    clearInterval(x);
+
+    setInterval(function(){
+      document.getElementById("demo").innerHTML = "Submitting..";
+      document.myForm.submit();
+    },1000);
+
+  }
+}, 1000);
+</script>
+
+<%- include('partials/footer') -%>

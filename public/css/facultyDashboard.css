@@ -1,0 +1,12 @@
+.textdec{
+  text-decoration: none;
+  font-weight: bold !important;
+}
+
+.boxFac{
+    height: 100px;
+}
+
+.boxtopFac{
+    border-bottom: 0px !important;
+}
