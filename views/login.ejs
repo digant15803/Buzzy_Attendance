@@ -1,15 +1,17 @@
 <%- include('partials/header') %>
 
-<div class="">
-        <div class="sign-up">
-            <div class="logo">
-                <img src="images/logo.png" alt="Company-logo">
-            </div>
-            <div class="">
-                <h3 class="mb-0 cursive">Buzzy Attendance</h3>
-                <p class="mt-0" style="color: gray;">Fast-forward the attendance process</p>
-            </div>
+
+    <div class="sign-up">
+
+        <div class="logo">
+            <img src="images/logo.png" alt="Company-logo">
         </div>
+        <div class="">
+            <h3 class="mb-0 cursive">Buzzy Attendance</h3>
+            <p class="mt-0" style="color: gray;">Fast-forward the attendance process</p>
+        </div>
+  </div>
+
         <div class="sign-in">
             <div class="l-account">
                 <h4 class="cursive" style="margin-bottom: 2px;">Login to your account</h4>
@@ -25,7 +27,7 @@
                     </div>
                     <div class="form-group mt-3">
                         <label class="h6 mb-1" style="float: left;">Password</label>
-                        <input type="password" name="pswd" class="form-control text-box login" id="exampleInputPassword1" placeholder="Password">
+                        <input type="password" name="password" class="form-control text-box login" id="exampleInputPassword1" placeholder="Password">
                     </div>
                     <br>
                     <div>
@@ -41,7 +43,6 @@
 
             </div>
         </div>
-    </div>
 
     <script>
       if(<%= incorrect %> === false){

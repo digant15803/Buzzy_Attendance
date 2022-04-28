@@ -16,10 +16,11 @@
                         <label class="form-check-label h6" for="flexCheckDefault" style="color: white;">
                             <%= word %>
                         </label>
+
                     </div>
                   <% }) %>
 
-
+                  <input type="hidden" name="courseName" value = "<%= courseCode%>">
                     <div class="col-sm-12">
                         <button type="submit" class="btn btnBuzz" style="color: white;">Submit</button>
                     </div>
@@ -35,7 +36,7 @@
 <script>
 // Set the date we're counting down to
 var t = new Date("<%= timeF%>");
-t.setSeconds(t.getSeconds() + 25);
+t.setSeconds(t.getSeconds() + <%= noofWord %>);
 var countDownDate = t.getTime();
 
 // Update the count down every 1 second

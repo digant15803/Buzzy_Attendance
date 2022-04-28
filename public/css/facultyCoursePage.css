@@ -1,0 +1,64 @@
+/*
+.item {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+} */
+
+
+.facultIN{
+  border: 2px solid white !important;
+  margin-bottom: 20px !important;
+  border-radius: 100% !important;
+  margin: 10px auto !important;
+}
+
+.facultIN:hover{
+    color: white !important;
+    background-color: #363740 !important;
+}
+
+
+.submit{
+  margin-top: 8%;
+  width: 10%;
+    color: white !important;
+    background-color: #363740 !important;
+}
+
+.submit:hover{
+    color: #363740 !important;
+    background-color: white !important;
+}
+
+
+
+/* input[type="checkbox"] {
+    margin: 20px;
+} */
+
+.fac-form {
+    text-align: center;
+    margin-left: 20px;
+}
+
+
+.in-text {
+    text-align: center;
+    height: auto;
+    top: 10px;
+    border: none;
+    background: transparent;
+    font-size: auto;
+    font-weight: auto;
+}
+
+.in-text:focus {
+    outline: none;
+    box-shadow: inset 0 -3px 0 0 white;
+}
+
+.in-text:focus::placeholder {
+    color: transparent;
+}

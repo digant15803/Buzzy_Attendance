@@ -9,6 +9,7 @@ input:focus::placeholder{
   color: transparent;
 }
 
+
 .cursive{
   font-family: cursive;
   font-weight: bold;
@@ -35,7 +36,7 @@ input:focus::placeholder{
     width: 45%;
     height: 100%;
     float: left;
-    min-height: 100vh
+    min-height: 100vh;
 }
 
 .l-account{

@@ -1,0 +1,72 @@
+<%- include('partials/navbar') -%>
+
+  <div class="row">
+    <div class="row" style="margin-top: 50px;">
+      <div class="col-lg-6">
+
+
+      <div style="width: 50%; background-color: #363740; border-radius: 20px; margin-left: 215px;">
+        <div id="heading" style="color: white; border-bottom: 3px solid white; text-align: center; margin-top: 10px;">
+          <h3 style="padding-top: 3%">Correct</h3>
+        </div>
+
+
+
+        <div style="margin-top: 13px;">
+          <% correctList.forEach(function(list){ %>
+            <div style="margin-bottom: 2px; text-align: center;">
+              <label class="form-check-label h6" for="flexCheckDefault" style="color: white;">
+                <%= list %>
+              </label>
+            </div>
+            <%})%>
+              <div style="text-align: center;">
+                <form action="/faculty/<%= courseCode%>" class="check-fac" method="post">
+                  <div class="w-100" style="">
+                    <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: white;">
+                  </div>
+                  <div style=" margin: 0;">
+                    <input type="hidden" name="hidden" value="<%= courseCode%>">
+                    <button type="submit" name="list" value="correct" class="facultIN btn btn-light">+</button>
+                  </div>
+                </form>
+              </div>
+        </div>
+      </div>
+      </div>
+      <div class="col-lg-6">
+      <div style="width: 50%; background-color: #363740; border-radius: 20px; margin-left: 215px;">
+        <div id="heading" style="color: white; border-bottom: 3px solid white; text-align: center; margin-top: 10px;">
+          <h3 style="padding-top: 3%">Incorrect</h3>
+        </div>
+        <div style="margin-top: 13px;">
+          <%incorrectList.forEach(function(list){ %>
+            <div style="margin-bottom: 2px; text-align: center;">
+              <label class="form-check-label h6" for="flexCheckDefault" style="color: white;">
+                <%= list %>
+              </label>
+            </div>
+            <%})%>
+              <div style="text-align: center;">
+                <form action="/faculty/<%= courseCode%>" class="check-fac" method="post">
+                  <div class="w-100" style="">
+                    <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: white;">
+                  </div>
+                  <div style=" margin: 0;">
+                    <input type="hidden" name="hidden" value="<%= courseCode%>">
+                    <button type="submit" name="list" value="incorrect" class="facultIN btn btn-light">+</button>
+                  </div>
+                </form>
+              </div>
+        </div>
+      </div>
+      </div>
+<form class="" action="/faculty/<%= courseCode%>" method="post">
+      <div class="col-sm-12" style="text-align: center">
+        <button type="submit" class="btn submit" style="border: 2px solid #363740;" name="submit" value="submit">Submit</button>
+      </div>
+      </form>
+    </div>
+  </div>
+
+  <%- include('partials/footer') -%>
