@@ -9,6 +9,7 @@ const _ = require("lodash");
 const app = express();
 var session = require("express-session");
 var MySQLStore = require("express-mysql-session")(session);
+const flash = require('connect-flash');
 
 
 
@@ -41,6 +42,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 con.connect(function(err) {
   if (err) throw err;
@@ -71,16 +73,14 @@ passport.use('local', new LocalStrategy({
     },
     function(req, email, password, done) { // callback with email and password from our form
          con.query("SELECT * FROM (SELECT * FROM mydb.facuser UNION SELECT * FROM mydb.studentdata) a WHERE a.emailid like (?)",email,function(err,rows){
-			if (err)
-                return done(err);
+			 if (err)
+          return done(err);
 			 if (!rows.length) {
-
-                return done(null, false);
+                return done(null, false,req.flash('loginMessage', 'Oops! Username does not exist.'));
             }
-
 			// if the user is found but the password is wrong
             if (!( rows[0].password == password))
-                return done(null, false);
+                return done(null, false,req.flash('loginMessage', 'Oops! Wrong Password.'));
 
             // all is well, return successful user
             return done(null, rows[0]);
@@ -96,12 +96,13 @@ passport.use('local', new LocalStrategy({
 
 
 app.get("/",function(req, res){
-   res.render("login",{incorrect: false});
+   res.render("login",{message: req.flash('loginMessage')});
  });
 
  app.post("/",passport.authenticate('local', {
   successRedirect: '/timepass',
-  failureRedirect: '/'
+  failureRedirect: '/',
+  failureFlash : true
 }));
 
 app.get("/timepass",function(req,res){
@@ -113,7 +114,10 @@ app.get("/timepass",function(req,res){
   }
 });
 
-
+app.get("/logout", function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 app.get("/student",function(req,res){
   if(req.isAuthenticated()){
@@ -159,7 +163,7 @@ app.get("/student/:courseName",function(req,res){
           }
         });
         if(result.length === 0){
-          res.render("late",{displayMsg: "Attendance Process is not yet started.",enrolnofa: enrol, courseCode: courseCodeVar, courses: courselist, enrolid: enrol, headingVariable: courseCodeVar + ": " + coursefullName});
+          res.render("late",{displayMsg: "Attendance Process is not yet started.",enrolnofa: req.user.facultyid, courseCode: courseCodeVar, courses: courselist, enrolid: req.user.facultyid, headingVariable: courseCodeVar + ": " + coursefullName});
         }
         else{
           time = result[result.length-1].date_time;
@@ -316,7 +320,13 @@ app.get("/faculty/:courseCode",function(req,res){
 app.post("/faculty/:courseCode",function(req,res){
   if(req.isAuthenticated()){
     if(req.body.submit=="submit"){
+      con.query("UPDATE session set date_time = sysdate(), tbool = 1 WHERE cCode = ? AND tbool = 0",req.body.hidden, function (err, result) {
+        if (err) throw err;
+
+        console.log("XYZ");
         res.redirect("/faculty");
+      });
+
     }
     else{
       let incorrectArr = [];
@@ -335,7 +345,7 @@ app.post("/faculty/:courseCode",function(req,res){
           if (err) throw err;
 
           if(result.length == 0){
-            con.query("INSERT INTO session VALUES(?,sysdate(),?,?)",[req.body.hidden,null,null], function (err, result) {
+            con.query("INSERT INTO session VALUES(?,sysdate(),?,?,'0')",[req.body.hidden,null,null], function (err, result) {
               if (err) throw err;
             });
           }
@@ -364,14 +374,14 @@ app.post("/faculty/:courseCode",function(req,res){
           if(req.body.list==="incorrect"){
               if(item!=""){
                 fBuzz+=item+",";
-                con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?)",[fBuzz,req.body.hidden], function (err, result) {
+                con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[fBuzz,req.body.hidden], function (err, result) {
                   if (err) throw err;
                 });
               }
             }else{
               if(item!=""){
                 tBuzz+=item+",";
-                con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?)",[tBuzz,req.body.hidden], function (err, result) {
+                con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[tBuzz,req.body.hidden], function (err, result) {
                   if (err) throw err;
                 });
               }

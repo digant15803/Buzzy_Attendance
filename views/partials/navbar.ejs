@@ -39,7 +39,14 @@
       <span class="navbar-toggler-icon"></span>
     </button>
       <h1 class="navbarHeading" style="color: white;"><%= headingVariable %></h1>
-      <a href="#" class="text-decoration-none h6 me-5 pt-2 idName" style="color: white;"><%= enrolnofa %></a>
+      <div class="dropdown">
+        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          <%= enrolnofa %> Digant Patel
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="/logout">Log out</a></li>
+        </ul>
+      </div>
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
         <h3 class="offcanvas-title offcanvasHeading" id="offcanvasNavbarLabel">Courses</h3>

@@ -35,7 +35,9 @@
                         <a href="#" style="float: right;">forgot password?</a>
                         <br>
                         <br>
-                        <p class="mt-1 text-danger" id="check"><%= incorrect%></p>
+                        <% if (message.length > 0) { %>
+                            <p class="mt-1 text-danger"><%= message %>
+                        <% } %>
                     </div>
 
                     <button type="submit" class="btn btn-outline-danger text-box cursive" style="margin-top: 20px;">Login</button>
@@ -43,15 +45,6 @@
 
             </div>
         </div>
-
-    <script>
-      if(<%= incorrect %> === false){
-        document.getElementById("check").innerHTML = "";
-      }
-      else{
-        document.getElementById("check").innerHTML = "Incorrect Email or Password";
-      }
-    </script>
 </body>
 
 </html>
