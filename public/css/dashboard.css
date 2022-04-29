@@ -5,8 +5,8 @@
 
 .box{
     height: 90%;
-    border: #363740 5px solid;
-    border-radius: 14px;
+    border: #363740 2px solid;
+    border-radius: 16px;
     background-color: white;
     margin: 10% 15% 15% 15%;
     display: flex;
@@ -17,13 +17,16 @@
 
 .box-top{
     /* margin: 0%; */
+    color: #363740 !important;
     width: 100%;
-    border-bottom: #363740 5px solid;
+    border-bottom: #363740 2px solid;
     height: 80%;
     padding: 0%;
     padding-left: 20px;
     padding-top: 20px;
     padding-right: 10px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
     /* position: relative; */
 }
 
@@ -36,17 +39,14 @@
 }
 
 .box-bottom{
-    background-color: #363740;
+    background-color: #00ADB5;
     /* position: relative; */
     height: 70%;
     width: 100%;
     margin: 0%;
+    border-top: #363740 2px solid;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
     /* margin-bottom: -1.5px;
     margin-left: -1px; */
 }
-
-/* .box-bottom-content{
-    margin-left: 10px;
-    margin-top: 25px;
-    color: white;
-} */

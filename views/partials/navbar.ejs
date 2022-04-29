@@ -41,32 +41,50 @@
       <h1 class="navbarHeading" style="color: white;"><%= headingVariable %></h1>
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          <%= enrolnofa %> Digant Patel
+          <%= enrolnofa %> <%= name%>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" href="/logout">Log out</a></li>
         </ul>
       </div>
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-      <div class="offcanvas-header">
-        <h3 class="offcanvas-title offcanvasHeading" id="offcanvasNavbarLabel">Courses</h3>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body bg-dark">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <div
+            class="offcanvas offcanvas-start"
+            tabindex="-1"
+            id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel"
+          >
+            <div class="offcanvas-header" style="background-color: #212529">
+              <h3
+                class="offcanvas-title offcanvasHeading"
+                style="color: aliceblue"
+                id="offcanvasNavbarLabel"
+              >
+                Courses
+              </h3>
+              <button
+                type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body" style="background-color: EEEEEE">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <% courses.forEach(function(course){ %>
 
-          <% courses.forEach(function(course){ %>
-
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/student/<%= course.coursecode%>"><%= course.coursecode%>: <%=course.coursename%></a>
-          </li>
-          <% }) %>
-
-
-        </ul>
-      </div>
-
-    </div>
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    style="color: black"
+                    aria-current="page"
+                    href="/student/<%= course.coursecode%>"
+                    ><%= course.coursecode%>: <%=course.coursename%></a
+                  >
+                </li>
+                <% }) %>
+              </ul>
+            </div>
+          </div>
 
   </div>
 </nav>

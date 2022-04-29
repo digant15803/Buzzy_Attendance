@@ -2,14 +2,29 @@
 
 <div class="container row" style="margin: auto">
   <% courses.forEach(function(course){ %>
-    <div class="col-sm-4">
-        <div class="box boxFac">
-            <div class="box-top boxtopFac">
-                <a class="textdec h4" href="/faculty/<%= course.coursecode%>" style="color: #363740"><%= course.coursecode%>: <%=course.coursename%></a>
-            </div>
-
+  <div class="col-sm-4">
+    <div class="box boxFac">
+      <div class="box-top boxtopFac">
+        <a
+          class="textdec h4"
+          href="/faculty/<%= course.coursecode%>"
+          style="color: #363740"
+          ><%= course.coursecode%>: <%=course.coursename%></a
+        >
+      </div>
+      <div class="boxMidFac">
+        <p>Date: 29-04-2022</p>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 boxBotLeftFac" style="padding: 30px">
+          <a>Enter Buzz Word</a>
         </div>
+        <div class="col-sm-6 boxBotRightFac" style="padding: 30px">
+          <a> Students </a>
+        </div>
+      </div>
     </div>
+  </div>
   <% }) %>
 </div>
 

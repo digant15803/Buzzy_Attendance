@@ -127,7 +127,7 @@ app.get("/student",function(req,res){
     con.query(sql,[req.user.facultyid,req.user.facultyid], function (err, result) {
       if (err) throw err;
       // courselist = result;
-      res.render("studentCourses",{enrolnofa: req.user.facultyid, courses: result, headingVariable: "Courses"});
+      res.render("studentCourses",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result, headingVariable: "Courses"});
     });
 
   }
@@ -163,7 +163,7 @@ app.get("/student/:courseName",function(req,res){
           }
         });
         if(result.length === 0){
-          res.render("late",{displayMsg: "Attendance Process is not yet started.",enrolnofa: req.user.facultyid, courseCode: courseCodeVar, courses: courselist, enrolid: req.user.facultyid, headingVariable: courseCodeVar + ": " + coursefullName});
+          res.render("late",{displayMsg: "Attendance Process is not yet started.",enrolnofa: req.user.facultyid, name: req.user.facname, courseCode: courseCodeVar, courses: courselist, enrolid: req.user.facultyid, headingVariable: courseCodeVar + ": " + coursefullName});
         }
         else{
           time = result[result.length-1].date_time;
@@ -192,12 +192,12 @@ app.get("/student/:courseName",function(req,res){
           // Find the distance between now and the count down date
           var distanceF = countDownDate - nowF;
           if(distanceF < 0){
-            res.render("late",{displayMsg: "Attendance has been marked.",enrolnofa: req.user.facultyid, courseCode: req.params.courseName, courses: courselist, enrolid: req.user.facultyid, headingVariable: req.params.courseName + ": " + coursefullName});
+            res.render("late",{displayMsg: "Attendance has been marked.",enrolnofa: req.user.facultyid, name: req.user.facname, courseCode: req.params.courseName, courses: courselist, enrolid: req.user.facultyid, headingVariable: req.params.courseName + ": " + coursefullName});
 
           }
           else{
             let timeCount = arrayBuzz.length*3.5;
-            res.render("studentInput",{noofWord: timeCount, timeF: time, enrolnofa: req.user.facultyid, courseCode: courseCodeVar, courses: courselist, buzzWords: arrayBuzz, enrolid: req.user.facultyid, headingVariable: courseCodeVar + ": " + coursefullName});
+            res.render("studentInput",{noofWord: timeCount, timeF: time, enrolnofa: req.user.facultyid,name: req.user.facname, courseCode: courseCodeVar, courses: courselist, buzzWords: arrayBuzz, enrolid: req.user.facultyid, headingVariable: courseCodeVar + ": " + coursefullName});
 
           }
         }
@@ -292,7 +292,7 @@ app.get("/faculty",function(req,res){
     con.query(sql,req.user.facultyid, function (err, result) {
       if (err) throw err;
 
-      res.render("facultyCourses",{enrolnofa: req.user.facultyid, courses: result, headingVariable: "Courses"});
+      res.render("facultyCourses",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result, headingVariable: "Courses"});
     });
 
   }
@@ -309,7 +309,7 @@ app.get("/faculty/:courseCode",function(req,res){
       con.query(sql,req.user.facultyid, function (err, result) {
         if (err) throw err;
 
-        res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, courses: result ,headingVariable: "Enter BuzzWords", correctList: [], incorrectList: [], courseCode: req.params.courseCode});
+        res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result ,headingVariable: "Enter BuzzWords", correctList: [], incorrectList: [], courseCode: req.params.courseCode});
       });
 
     }
@@ -396,7 +396,7 @@ app.post("/faculty/:courseCode",function(req,res){
             }
 
 
-            res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode});
+            res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode});
 
 
         });
