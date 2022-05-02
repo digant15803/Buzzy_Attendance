@@ -17,7 +17,8 @@
 
 .box-top{
     /* margin: 0%; */
-    color: #363740 !important;
+    background-color: #DBE2EF;
+    color: #000000 !important;
     width: 100%;
     border-bottom: #363740 2px solid;
     height: 80%;
@@ -39,7 +40,9 @@
 }
 
 .box-bottom{
-    background-color: #00ADB5;
+  background-color: #222831;
+
+    color: white;
     /* position: relative; */
     height: 70%;
     width: 100%;

@@ -10,17 +10,17 @@ input:focus::placeholder{
 }
 
 
-.cursive{
-  font-family: cursive;
-  font-weight: bold;
+body{
+  font-family: 'Times New Roman', Times, serif !important;
+
 }
 .login::placeholder{
-  font-family: cursive;
+  font-family: 'Times New Roman', Times, serif;
   font-size: 90%;
 }
 
 .sign-up{
-    background-color: #363740;
+    background-color: #222831;
     color: white;
     text-align: center;
     display: inline-block;

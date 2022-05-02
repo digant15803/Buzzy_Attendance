@@ -33,12 +33,13 @@
 
 
 
-  <nav class="navbar navbar-dark shadow-sm border-bottom bg-dark">
+  <nav class="navbar navbar-custom shadow-sm border-bottom">
   <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+    <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
-      <h1 class="navbarHeading" style="color: white;"><%= headingVariable %></h1>
+      <h1 class="navbarHeading" style="color: white; font-family: 'Times New Roman', Times, serif;
+"><%= headingVariable %></h1>
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
           <%= enrolnofa %> <%= name%>
@@ -53,11 +54,10 @@
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"
           >
-            <div class="offcanvas-header" style="background-color: #212529">
+            <div class="offcanvas-header" style="border-bottom: 2px solid">
               <h3
                 class="offcanvas-title offcanvasHeading"
-                style="color: aliceblue"
-                id="offcanvasNavbarLabel"
+                id="offcanvasNavbarLabel" style="font-family: 'Times New Roman', Times, serif;"
               >
                 Courses
               </h3>

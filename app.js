@@ -305,11 +305,28 @@ app.get("/faculty",function(req,res){
 
 app.get("/faculty/:courseCode",function(req,res){
     if(req.isAuthenticated()){
+      let correctList = [];
+      let incorrectList = [];
       let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
       con.query(sql,req.user.facultyid, function (err, result) {
         if (err) throw err;
 
-        res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result ,headingVariable: "Enter BuzzWords", correctList: [], incorrectList: [], courseCode: req.params.courseCode});
+        con.query("SELECT * FROM session WHERE DATE(date_time) = DATE(sysdate()) AND cCode = ?",req.params.courseCode, function (err, result) {
+          if (err) throw err;
+
+          if(result.length!=0){
+            if(result[0].tBuzz.length!=0){
+              correctList = result[0].tBuzz.split(",");
+              correctList.pop();
+            }
+            if(result[0].fBuzz.length!=0){
+              incorrectList = result[0].fBuzz.split(",");
+              incorrectList.pop();
+            }
+          }
+
+        res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode});
+        });
       });
 
     }
@@ -323,7 +340,6 @@ app.post("/faculty/:courseCode",function(req,res){
       con.query("UPDATE session set date_time = sysdate(), tbool = 1 WHERE cCode = ? AND tbool = 0",req.body.hidden, function (err, result) {
         if (err) throw err;
 
-        console.log("XYZ");
         res.redirect("/faculty");
       });
 
