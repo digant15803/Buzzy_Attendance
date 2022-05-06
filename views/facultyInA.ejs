@@ -1,4 +1,4 @@
-<%- include('partials/navbar') -%>
+<%- include('partials/navbarFac') -%>
 
   <div class="row">
     <div class="row" style="margin-top: 50px;">
@@ -21,12 +21,13 @@
             </div>
             <%})%>
               <div style="text-align: center;">
-                <form action="/faculty/<%= courseCode%>" class="check-fac" method="post">
+                <form action="/faculty/<%= dateP %>/<%= courseCode%>" class="check-fac" method="post">
                   <div class="w-100" style="">
                     <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: white;">
                   </div>
                   <div style=" margin: 0;">
                     <input type="hidden" name="hidden" value="<%= courseCode%>">
+                    <input type="hidden" name="dateP" value="<%= dateP%>">
                     <button type="submit" name="list" value="correct" class="facultIN btn btn-light">+</button>
                   </div>
                 </form>
@@ -48,12 +49,13 @@
             </div>
             <%})%>
               <div style="text-align: center;">
-                <form action="/faculty/<%= courseCode%>" class="check-fac" method="post">
+                <form action="/faculty/<%= dateP %>/<%= courseCode%>" class="check-fac" method="post">
                   <div class="w-100" style="">
                     <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: white;">
                   </div>
                   <div style=" margin: 0;">
                     <input type="hidden" name="hidden" value="<%= courseCode%>">
+                    <input type="hidden" name="dateP" value="<%= dateP%>">
                     <button type="submit" name="list" value="incorrect" class="facultIN btn btn-light">+</button>
                   </div>
                 </form>
@@ -61,12 +63,6 @@
         </div>
       </div>
       </div>
-<form class="" action="/faculty/<%= courseCode%>" method="post">
-      <div class="col-sm-12" style="text-align: center">
-        <input type="hidden" name="hidden" value="<%= courseCode%>">
-        <button type="submit" class="btn submit" style="border: 2px solid #363740;" name="submit" value="submit">Submit</button>
-      </div>
-      </form>
     </div>
   </div>
 

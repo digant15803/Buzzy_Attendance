@@ -86,9 +86,6 @@ passport.use('local', new LocalStrategy({
             return done(null, rows[0]);
 
 		});
-
-
-
 }));
 
 
@@ -121,12 +118,10 @@ app.get("/logout", function(req, res){
 
 app.get("/student",function(req,res){
   if(req.isAuthenticated()){
-    let sql = "SELECT * FROM (SELECT * FROM studentdata s LEFT JOIN (SELECT * FROM enroledin NATURAL JOIN courses NATURAL JOIN facultydetails) e on s.enrolno = e.enrolnoD where s.enrolno = ?) tab1 LEFT JOIN (SELECT * FROM ((SELECT cCode as mCourse,count(*) as Tcount FROM mydb.session order by cCode)  temp1 LEFT JOIN (SELECT courseC,count(buzzattendance) as count FROM mydb.attendance WHERE buzzattendance = true and enrolmentno = ? order by courseC)  temp2 on temp2.courseC = temp1.mCourse)) tab2 on tab1.coursecode = tab2.mCourse";
+    let sql = "SELECT * FROM (SELECT * FROM studentdata s LEFT JOIN (SELECT * FROM enroledin NATURAL JOIN courses NATURAL JOIN facultydetails) e on s.enrolno = e.enrolnoD where s.enrolno = ?) tab1 LEFT JOIN (SELECT * FROM ((SELECT cCode as mCourse,count(*) as Tcount FROM mydb.session WHERE tbool = 1 order by cCode)  temp1 LEFT JOIN (SELECT courseC,count(buzzattendance) as count FROM mydb.attendance WHERE buzzattendance = true and enrolmentno = ? order by courseC)  temp2 on temp2.courseC = temp1.mCourse)) tab2 on tab1.coursecode = tab2.mCourse";
 
-    //let sql = "SELECT * FROM studentdata s LEFT JOIN (SELECT * FROM enroledin NATURAL JOIN courses NATURAL JOIN facultydetails) e on s.enrolno = e.enrolnoD where s.enrolno = (?)";
     con.query(sql,[req.user.facultyid,req.user.facultyid], function (err, result) {
       if (err) throw err;
-      // courselist = result;
       res.render("studentCourses",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result, headingVariable: "Courses"});
     });
 
@@ -154,7 +149,7 @@ app.get("/student/:courseName",function(req,res){
         courselist = result;
 
       });
-      sql = "SELECT * FROM session WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?)";
+      sql = "SELECT * FROM session WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = 1";
       con.query(sql,courseCodeVar, function (err, result) {
         if (err) throw err;
         courselist.forEach(function(courseN){
@@ -220,7 +215,7 @@ app.post("/student/:courseName",function(req,res){
     let fBuzzA;
     let arrayBuzz;
 
-    let sql = "SELECT * FROM session WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?)";
+    let sql = "SELECT * FROM session WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = 1";
     con.query(sql,[req.body.courseName], function (err, result) {
       if (err) throw err;
 
@@ -268,18 +263,83 @@ app.post("/student/:courseName",function(req,res){
     else{
       boolAttendance = false;
     }
-    console.log(count);
-    console.log(countW);
-    console.log(boolAttendance);
 
-    sql = "INSERT INTO attendance VALUES(?,?,DATE(?),?,DEFAULT,DEFAULT)";
-    con.query(sql,[req.user.facultyid,req.body.courseName,new Date(),boolAttendance], function (err, result) {
+    sql = "UPDATE attendance SET buzzattendance = ? WHERE DATE(sessionDate) = DATE(?) AND enrolmentno = ? AND courseC = ?";
+    con.query(sql,[boolAttendance,new Date(),req.user.facultyid,req.body.courseName], function (err, result) {
       if (err) throw err;
     });
   });
 
     res.redirect("/student");
 });
+
+
+
+app.get("/student/:courseCode/attendance",function(req,res){
+  if(req.isAuthenticated()){
+    let dates =[];
+    let courseList;
+    let pCount = 0;
+    let tCount = 0;
+    let dateMap = new Map();
+
+    let sql = "SELECT * FROM mydb.enroledin NATURAL JOIN courses WHERE enrolnoD = ? ";
+
+    con.query(sql,req.user.facultyid, function (err, result) {
+      if (err) throw err;
+      courseList = result;
+
+    });
+
+
+    con.query("SELECT DATE(date_time) time FROM session WHERE cCode = ? AND tbool = 1",req.params.courseCode,function(err,result){
+      if (err) throw err;
+
+      console.log(result);
+      result.forEach(function(temp){
+          dateMap.set(temp.time.toDateString(),0);
+          dates.push(temp.time.toDateString());
+          tCount = tCount+1;
+      });
+
+      console.log(dates);
+      con.query("SELECT DATE(sessionDate) time,finalattendance FROM attendance WHERE enrolmentno = ? and courseC = ?",[req.user.facultyid,req.params.courseCode],function(err,result){
+        if(err) throw err;
+
+        result.forEach(function(temp){
+          if(temp.finalattendance == 1){
+            dateMap.set(temp.time.toDateString(),1);
+            pCount = pCount+1;
+          }
+        });
+        if(dates.length==0){
+          res.render("studentAtt",{attendance: [],map: dateMap,pCount: 0 ,tCount: 0, enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList, headingVariable: "Attendance", tbool: false});
+        }
+        else{
+          res.render("studentAtt",{attendance: dates,map: dateMap,pCount: pCount ,tCount: tCount, enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList, headingVariable: "Attendance", tbool: true});
+        }
+      });
+
+    });
+  }
+  else{
+    res.redirect("/");
+  }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -302,31 +362,127 @@ app.get("/faculty",function(req,res){
 
 });
 
+app.post("/faculty",function(req,res){
+  let d = req.body.date;
+  let code = req.body.courseCode;
+  if(req.body.submit == "b"){
+    res.redirect("/faculty/"+d+"/"+code);
+  }
+  else{
+    res.redirect("/faculty/"+d+"/"+code+"/attendance");
+  }
+});
+
+app.post("/faculty/:date/:courseCode/attendance",function(req,res){
+  res.redirect("/faculty/"+req.body.dateNew+"/"+req.body.course+"/attendance");
+});
+
+
+app.get("/faculty/:date/:courseCode/attendance",function(req,res){
+  if(req.isAuthenticated()){
+    let courseList;
+    let ps=0;
+    let noOfS = 0;
+    var sList;
+    let c = false;
+    let attMap = new Map();
+    let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
+    con.query(sql,req.user.facultyid, function (err, result) {
+      if (err) throw err;
+
+      courseList = result;
+    });
+    con.query("SELECT * FROM session WHERE DATE(date_time) = DATE(?) and cCode = ? AND tbool = 1",[req.params.date,req.params.courseCode],function(err,result){
+      if (err) throw err;
+
+      if(result.length == 0){
+        c = false;
+      }
+      else{
+        c = true;
+      }
+      if(c & ((new Date(req.params.date).getTime()-new Date().getTime())<0)){
+        con.query("SELECT * FROM enroledin INNER JOIN studentdata on enrolnoD=enrolno WHERE coursecode = ? ORDER BY enrolnoD",req.params.courseCode, function (err, result) {
+          if (err) throw err;
+
+          sList = result;
+          noOfS = result.length;
+          sList.forEach(function(student){
+            attMap.set(student.enrolnoD,0);
+          });
+
+          con.query("SELECT * FROM attendance WHERE courseC = ? AND DATE(sessionDate) = DATE(?)",[req.params.courseCode,req.params.date], function (err, result) {
+            if (err) throw err;
+
+            result.forEach(function(student){
+              if(student.finalattendance == true){
+                attMap.set(student.enrolmentno,1);
+                ps = ps+1;
+              }
+            });
+
+            res.render("FacAtt",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Attendance",students: sList, attMap: attMap, c: c, ps: ps, noOfS: noOfS, dateP: req.params.date, courseCo: req.params.courseCode});
+          });
+        });
+      }
+      else{
+        res.render("FacAtt",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Attendance",students: sList, attMap: attMap, c: false, ps: 0, noOfS: 0, dateP: req.params.date, courseCo: req.params.courseCode});
+
+      }
+    });
+  }
+  else{
+    res.redirect("/")
+  }
+
+});
+
+app.post("/faculty/markAttendance",function(req,res){
+  let data = req.body.data;
+  let date = req.body.dateM;
+  let course = req.body.course;
+
+  let sArray = data.split(",");
+  sArray.pop();
+
+  sArray.forEach(function(enrl){
+    con.query("UPDATE attendance SET biometricattendance = true WHERE DATE(sessionDate) = DATE(?) AND enrolmentno = ? AND courseC = ?",[date,enrl,course],function(err,result){
+      if(err) throw err;
+    });
+  });
+
+  res.redirect("/faculty");
+
+});
+
 
 app.get("/faculty/:courseCode",function(req,res){
     if(req.isAuthenticated()){
       let correctList = [];
       let incorrectList = [];
+      let courseList;
       let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
       con.query(sql,req.user.facultyid, function (err, result) {
         if (err) throw err;
 
-        con.query("SELECT * FROM session WHERE DATE(date_time) = DATE(sysdate()) AND cCode = ?",req.params.courseCode, function (err, result) {
-          if (err) throw err;
+        courseList = result;
+      });
 
-          if(result.length!=0){
-            if(result[0].tBuzz.length!=0){
-              correctList = result[0].tBuzz.split(",");
-              correctList.pop();
-            }
-            if(result[0].fBuzz.length!=0){
-              incorrectList = result[0].fBuzz.split(",");
-              incorrectList.pop();
-            }
+      con.query("SELECT * FROM session WHERE DATE(date_time) = DATE(sysdate()) AND cCode = ?",req.params.courseCode, function (err, result) {
+        if (err) throw err;
+
+        if(result.length!=0){
+          if(result[0].tBuzz != null){
+            correctList = result[0].tBuzz.split(",");
+            correctList.pop();
           }
+          if(result[0].fBuzz != null){
+            incorrectList = result[0].fBuzz.split(",");
+            incorrectList.pop();
+          }
+        }
 
-        res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode});
-        });
+      res.render("facultyIn",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode});
       });
 
     }
@@ -335,7 +491,16 @@ app.get("/faculty/:courseCode",function(req,res){
     }
   })
 app.post("/faculty/:courseCode",function(req,res){
+
   if(req.isAuthenticated()){
+    let correctList;
+
+    let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
+    con.query(sql,req.user.facultyid, function (err, result) {
+      if (err) throw err;
+
+      courseList = result;
+    });
     if(req.body.submit=="submit"){
       con.query("UPDATE session set date_time = sysdate(), tbool = 1 WHERE cCode = ? AND tbool = 0",req.body.hidden, function (err, result) {
         if (err) throw err;
@@ -351,7 +516,7 @@ app.post("/faculty/:courseCode",function(req,res){
       let tBuzz = "";
       let fBuzz = "";
       let item = req.body.newItem;
-      let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
+      sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
       con.query(sql,req.user.facultyid, function (err, result) {
         if (err) throw err;
         courseList = result;
@@ -412,13 +577,141 @@ app.post("/faculty/:courseCode",function(req,res){
             }
 
 
-            res.render("facultyCoursePage",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode});
+            res.render("facultyIn",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode});
 
 
         });
 
       });
     }
+  }
+  else{
+    res.redirect("/");
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+app.get("/faculty/:date/:courseCode",function(req,res){
+    if(req.isAuthenticated()){
+      let d = new Date(req.params.date);
+      let correctList = [];
+      let incorrectList = [];
+      let courseList;
+      let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
+      con.query(sql,req.user.facultyid, function (err, result) {
+        if (err) throw err;
+
+        courseList = result;
+
+      });
+
+      con.query("SELECT * FROM session WHERE DATE(date_time) = DATE(?) AND cCode = ?",[d,req.params.courseCode], function (err, result) {
+        if (err) throw err;
+
+        if(result.length!=0){
+          if(result[0].tBuzz != null){
+            correctList = result[0].tBuzz.split(",");
+            correctList.pop();
+          }
+          if(result[0].fBuzz != null){
+            incorrectList = result[0].fBuzz.split(",");
+            incorrectList.pop();
+          }
+        }
+
+      res.render("facultyInA",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode, dateP: d});
+      });
+
+    }
+    else{
+      res.redirect("/");
+    }
+  })
+app.post("/faculty/:date/:courseCode",function(req,res){
+  if(req.isAuthenticated()){
+      let d = new Date(req.body.dateP);
+      let incorrectArr = [];
+      let correctArr = [];
+      let courseList;
+      let tBuzz = "";
+      let fBuzz = "";
+      let item = req.body.newItem;
+      let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
+      con.query(sql,req.user.facultyid, function (err, result) {
+        if (err) throw err;
+        courseList = result;
+
+      });
+
+      con.query("SELECT * FROM session WHERE DATE(date_time) = DATE(?) AND cCode = ?",[d,req.body.hidden], function (err, result) {
+        if (err) throw err;
+
+        if(result.length == 0){
+          con.query("INSERT INTO session VALUES(?,?,?,?,'0')",[req.body.hidden,d,null,null], function (err, result) {
+            if (err) throw err;
+          });
+        }
+
+        if(result.length == 0){
+          tBuzz = "";
+          fBuzz = "";
+        }
+        else{
+          if(result[0].tBuzz != null){
+            tBuzz = result[0].tBuzz;
+          }
+          else{
+            tBuzz = "";
+          }
+
+          if(result[0].fBuzz != null){
+            fBuzz = result[0].fBuzz;
+          }
+          else{
+            fBuzz = "";
+          }
+        }
+
+
+        if(req.body.list==="incorrect"){
+            if(item!=""){
+              fBuzz+=item+",";
+              con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(?) AND cCode = (?) AND tbool = '0'",[fBuzz,d,req.body.hidden], function (err, result) {
+                if (err) throw err;
+              });
+            }
+          }else{
+            if(item!=""){
+              tBuzz+=item+",";
+              con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(?) AND cCode = (?) AND tbool = '0'",[tBuzz,d,req.body.hidden], function (err, result) {
+                if (err) throw err;
+              });
+            }
+          }
+          if(tBuzz != undefined ){
+            correctArr = tBuzz.split(",");
+            correctArr.pop();
+          }
+          if(fBuzz != undefined ){
+            incorrectArr = fBuzz.split(",");
+            incorrectArr.pop();
+          }
+
+
+          res.render("facultyInA",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode, dateP: d});
+
+
+      });
   }
   else{
     res.redirect("/");

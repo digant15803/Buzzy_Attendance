@@ -1,0 +1,126 @@
+<%- include('partials/navbarFac') -%>
+
+<form action="/faculty/markAttendance" method="post">
+  <select id="shift">
+    <option value="S1">8:00 to 9:30 AM</option>
+    <option value="S2">9:30 to 11:00 AM</option>
+    <option value="S3">11:00 to 12:30 PM</option>
+    <option value="S4">1:00 to 2:30 PM</option>
+    <option value="S5">2:30 to 4:00 PM</option>
+    <option value="S6">4:00 to 5:30 PM</option>
+    <option value="S7">5:30 to 7:00 PM</option>
+  </select>
+  <input type="hidden" name="course" value="<%= courseCo %>">
+  <input type="hidden" name="dateM" value="<%= dateP%>">
+  <input type="file" id="excel_file" />
+  <button class="btn btn-dark" type="submit" name="button"">Submit</button>
+  <div id = "excel_data">
+    <input type="hidden" id="success" name="data" value="hiii">
+  </div>
+</form>
+
+<form action="/faculty/<%= dateP%>/<%= courseCo%>/attendance" method="post">
+  <input type="hidden" name="course" value="<%= courseCo %>">
+  <input type="hidden" name="d" value="<%= dateP%>">
+  <input type="date" name="dateNew" value="01-05-2022">
+  <button class="btn btn-dark" type="submit" name="button">Modify</button>
+</form>
+<br>
+<br>
+
+
+<% if(c){ %>
+  <div class="row border-bottom border-3">
+      <div class="col-6">
+          <p class="m-3 top-content">Present Students : <%= ps%> / <%= noOfS%> </p>
+          <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
+      </div>
+      <div class="col-6">
+          <p class="m-3 top-content" style="float: right;">Date : <%= dateP %></p>
+          <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
+      </div>
+  </div>
+
+
+
+  <div class="row text-center p-3" style="justify-content: center;">
+    <% students.forEach(function(student){ %>
+      <div class="col-sm-6 boxe">
+          <div class="row text-center border border-dark rounded shadow mt-2 atdce">
+              <div class="col-4">
+                  <p class="ctnt"><%= student.studname%></p>
+              </div>
+              <div class="col-4">
+                  <p class="ctnt"><%= student.enrolnoD%></p>
+              </div>
+              <div class="col-4">
+                <% if(attMap.get(student.enrolnoD) == 1){ %>
+                  <p class="ctnt text-success">Present</p>
+                <% } else{%>
+                  <p class="ctnt text-danger">Absent</p>
+                <% } %>
+
+              </div>
+          </div>
+      </div>
+
+    <% }) %>
+  </div>
+<% }else{ %>
+  <h3>No Data Found</h3>
+<% } %>
+
+
+
+
+<script type="text/javascript">
+  const excel_file = document.getElementById('excel_file');
+
+  excel_file.addEventListener('change',(event)=>{
+    var reader = new FileReader();
+
+    reader.readAsArrayBuffer(event.target.files[0]);
+
+    reader.onload = function(event){
+      var data = new Uint8Array(reader.result);
+      var work_book = XLSX.read(data,{type:'array'});
+
+      var sheet_name = work_book.SheetNames;
+
+      var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
+
+      if(sheet_data.length>0){
+        var table_output = "";
+        var shift = document.getElementById('shift').value;
+        var cell;
+        if(shift == "S1"){
+          cell = 5;
+        }else if(shift == "S2"){
+          cell =6;
+        }else if(shift == "S3"){
+          cell =7;
+        }else if(shift == "S4"){
+          cell =8;
+        }else if(shift == "S5"){
+          cell =9;
+        }else if(shift == "S6"){
+          cell =10;
+        }else if(shift == "S7"){
+          cell =11;
+        }
+          for(var row=13;row<sheet_data.length;row++){
+            if(sheet_data[row][cell] == "1/1(100%)"){
+              table_output+=sheet_data[row][1]+',';
+            }
+
+              // for(var cell=vari;cell<sheet_data[row].length;cell++){
+              //
+              // }
+          }
+
+          document.getElementById('success').value = table_output;
+      }
+    }
+  });
+</script>
+<%- include('partials/footer') -%>

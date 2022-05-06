@@ -1,0 +1,38 @@
+<%- include('partials/navbar') -%>
+<div class="row border-bottom border-3">
+    <div class="col-6">
+        <p class="m-3 top-content">Total Present : <%= pCount %> / <%= tCount%></p>
+        <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
+    </div>
+</div>
+
+
+<div class="row text-center p-3">
+  <% if(tbool){ %>
+    <% attendance.forEach(function(att){ %>
+
+
+    <div class="col-sm-6 boxe">
+        <div class="row text-center border border-dark rounded shadow mt-2 atdce">
+            <div class="col-6">
+                <p class="ctnt"><%= att%></p>
+            </div>
+            <div class="col-6">
+              <% if(map.get(att) == 1){ %>
+                <p class="ctnt text-success">Present</p>
+              <% }else{ %>
+                <p class="ctnt text-danger">Absent</p>
+              <% } %>
+
+            </div>
+        </div>
+    </div>
+  <% }) %>
+  <% }else{ %>
+    <h3>No Data Found.</h3>
+  <% } %>
+
+
+</div>
+
+<%- include('partials/footer') -%>

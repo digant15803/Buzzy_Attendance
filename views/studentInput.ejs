@@ -56,13 +56,13 @@ var x = setInterval(function() {
   document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
 
   // If the count down is finished, write some text
-  if (distance <= 2) {
+  if (minutes <= 0 && seconds<=1) {
     clearInterval(x);
 
-    // setInterval(function(){
-    //   document.getElementById("demo").innerHTML = "Submitting..";
-    //   document.myForm.submit();
-    // },1000);
+    setInterval(function(){
+      document.getElementById("demo").innerHTML = "Submitting..";
+      document.myForm.submit();
+    },2000);
 
   }
 }, 1000);

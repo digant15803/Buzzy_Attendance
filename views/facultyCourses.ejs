@@ -1,31 +1,30 @@
-<%- include('partials/navbar') %>
+<%- include('partials/navbarFac') %>
 
-<div class="container row" style="margin: auto">
+<div class="row" >
   <% courses.forEach(function(course){ %>
-  <div class="col-sm-4">
-    <div class="box boxFac">
-      <div class="box-top boxtopFac">
-        <a
-          class="textdec h4"
-          href="/faculty/<%= course.coursecode%>"
-          style="color: #363740"
-          ><%= course.coursecode%>: <%=course.coursename%></a
-        >
-      </div>
-      <div class="boxMidFac">
-        <span>Date: </span><input type="date" name="date" value="2022-04-01">
-      </div>
-      <div class="row">
-        <div class="col Custom">
-          <button type="button" class="btn btn-dark"><a href="" style="text-decoration: none; color: white;">BuzzWords</a></button>
+    <div class=" col-xl-4 col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 2%">
+        <div class="facBox">
+            <div class="box-top-fac facTop">
+                <a class="textdec h4" href="/faculty/<%= course.coursecode%>" style="color: #000000"><%= course.coursecode%>: <%=course.coursename%></a>
+            </div>
+            <form action="/faculty" method="post">
+            <div class="facMid d-flex align-items-center">
+
+                <span>Date: </span><input type="date" name="date" value="2022-05-01">
+                <input type="hidden" name="courseCode" value="<%= course.coursecode%>">
+
+            </div>
+            <div class="row facBot">
+              <div class="col d-flex justify-content-around align-items-center">
+                <button type="submit" name="submit" value="b" class="btn btn-dark">BuzzWords</button>
+              </div>
+              <div class="col d-flex justify-content-around align-items-center">
+                <button type="submit" name="submit" value="a" class="btn btn-dark">Attendance</button>
+              </div>
+            </div>
+            </form>
         </div>
-        <div class="col Custom-2">
-          <button type="button" class="btn btn-dark"><a href="" style="text-decoration: none; color: white;">Attendance</a></button>
-        </div>
-      </div>
     </div>
-  </div>
   <% }) %>
 </div>
-
 <%- include('partials/footer') %>
