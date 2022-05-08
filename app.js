@@ -118,7 +118,7 @@ app.get("/logout", function(req, res){
 
 app.get("/student",function(req,res){
   if(req.isAuthenticated()){
-    let sql = "SELECT * FROM (SELECT * FROM studentdata s LEFT JOIN (SELECT * FROM enroledin NATURAL JOIN courses NATURAL JOIN facultydetails) e on s.enrolno = e.enrolnoD where s.enrolno = ?) tab1 LEFT JOIN (SELECT * FROM ((SELECT cCode as mCourse,count(*) as Tcount FROM mydb.session WHERE tbool = 1 order by cCode)  temp1 LEFT JOIN (SELECT courseC,count(buzzattendance) as count FROM mydb.attendance WHERE buzzattendance = true and enrolmentno = ? order by courseC)  temp2 on temp2.courseC = temp1.mCourse)) tab2 on tab1.coursecode = tab2.mCourse";
+    let sql = "SELECT * FROM (SELECT * FROM studentdata s LEFT JOIN (SELECT * FROM enroledin NATURAL JOIN courses NATURAL JOIN facultydetails) e on s.enrolno = e.enrolnoD where s.enrolno = ?) tab1 LEFT JOIN (SELECT * FROM ((SELECT cCode as mCourse,count(*) as Tcount FROM mydb.session WHERE tbool = 1 group by cCode order by cCode)  temp1 LEFT JOIN (SELECT courseC,count(buzzattendance) as count FROM mydb.attendance WHERE buzzattendance = true and enrolmentno = ? order by courseC)  temp2 on temp2.courseC = temp1.mCourse)) tab2 on tab1.coursecode = tab2.mCourse;";
 
     con.query(sql,[req.user.facultyid,req.user.facultyid], function (err, result) {
       if (err) throw err;
