@@ -8,7 +8,6 @@ const _ = require("lodash");
 
 const app = express();
 var session = require("express-session");
-var MySQLStore = require("express-mysql-session")(session);
 const flash = require('connect-flash');
 
 
@@ -24,10 +23,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 const mysql = require('mysql');
 
 const con = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE
+  host: "localhost",
+  user: "root",
+  password: "password",
+  database: "mydb"
 });
 
 app.use(session({
@@ -118,7 +117,7 @@ app.get("/logout", function(req, res){
 
 app.get("/student",function(req,res){
   if(req.isAuthenticated()){
-    let sql = "SELECT * FROM (SELECT * FROM studentdata s LEFT JOIN (SELECT * FROM enroledin NATURAL JOIN courses NATURAL JOIN facultydetails) e on s.enrolno = e.enrolnoD where s.enrolno = ?) tab1 LEFT JOIN (SELECT * FROM ((SELECT cCode as mCourse,count(*) as Tcount FROM mydb.session WHERE tbool = 1 group by cCode order by cCode)  temp1 LEFT JOIN (SELECT courseC,count(buzzattendance) as count FROM mydb.attendance WHERE finalattendance = true and enrolmentno = ? order by courseC)  temp2 on temp2.courseC = temp1.mCourse)) tab2 on tab1.coursecode = tab2.mCourse;";
+    let sql = "SELECT * FROM (SELECT * FROM studentdata s LEFT JOIN (SELECT * FROM enroledin NATURAL JOIN courses NATURAL JOIN facultydetails) e on s.enrolno = e.enrolnoD where s.enrolno = ?) tab1 LEFT JOIN (SELECT * FROM ((SELECT cCode as mCourse,count(*) as Tcount FROM session WHERE tbool = 1 group by cCode order by cCode)  temp1 LEFT JOIN (SELECT courseC,count(buzzattendance) as count FROM attendance WHERE finalattendance = true and enrolmentno = ? order by courseC)  temp2 on temp2.courseC = temp1.mCourse)) tab2 on tab1.coursecode = tab2.mCourse;";
 
     con.query(sql,[req.user.facultyid,req.user.facultyid], function (err, result) {
       if (err) throw err;

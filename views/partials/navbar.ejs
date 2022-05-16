@@ -31,22 +31,18 @@
     crossorigin="anonymous"></script>
   <title>BuzzyAttendance</title>
 
-
-
-
   <nav class="navbar navbar-custom shadow-sm border-bottom">
   <div class="container-fluid">
     <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
-      <h1 class="navbarHeading" style="color: white; font-family: 'Times New Roman', Times, serif;
-"><%= headingVariable %></h1>
+      <h1 class="navbarHeading" style="color: white; font-family: 'Times New Roman', Times, serif;"><%= headingVariable %></h1>
       <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-light dropdown-toggle shadow-none" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
           <%= enrolnofa %> <%= name%>
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="/logout">Log out</a></li>
+        <ul class="dropdown-menu m-0 p-0" aria-labelledby="dropdownMenuButton1"  style="max-width: 5px;">
+          <li><a class="dropdown-item dp-down" href="/logout">Log out</a></li>
         </ul>
       </div>
       <div

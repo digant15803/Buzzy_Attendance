@@ -4,8 +4,11 @@
 
 .navbarHeading,.offcanvasHeading,.idName{
   font-family: cursive;
-}
+} 
 
+.dp-down:focus{
+  background-color: #222831 !important;
+}
 
 .navbar-custom {
     background-color: #222831;
