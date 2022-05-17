@@ -1,32 +1,42 @@
 <%- include('partials/navbarFac') -%>
 
-<form action="/faculty/markAttendance" method="post">
-  <select id="shift">
-    <option value="S1">8:00 to 9:30 AM</option>
-    <option value="S2">9:30 to 11:00 AM</option>
-    <option value="S3">11:00 to 12:30 PM</option>
-    <option value="S4">1:00 to 2:30 PM</option>
-    <option value="S5">2:30 to 4:00 PM</option>
-    <option value="S6">4:00 to 5:30 PM</option>
-    <option value="S7">5:30 to 7:00 PM</option>
-  </select>
-  <input type="hidden" name="course" value="<%= courseCo %>">
-  <input type="hidden" name="dateM" value="<%= dateP%>">
-  <input type="file" id="excel_file" />
-  <button class="btn btn-dark" type="submit" name="button"">Submit</button>
-  <div id = "excel_data">
-    <input type="hidden" id="success" name="data" value="hiii">
+<div class="row p-3">
+  <div class="col-6"> 
+    <form action="/faculty/markAttendance" method="post">
+      <select id="shift" style="height: 30px;">
+        <option class="optn m-0 p-0" value="S1">8:00 to 9:30 AM</option>
+        <option class="optn m-0 p-0" value="S2">9:30 to 11:00 AM</option>
+        <option class="optn m-0 p-0" value="S3">11:00 to 12:30 PM</option>
+        <option class="optn m-0 p-0" value="S4">1:00 to 2:30 PM</option>
+        <option class="optn m-0 p-0" value="S5">2:30 to 4:00 PM</option>
+        <option class="optn m-0 p-0" value="S6">4:00 to 5:30 PM</option>
+        <option class="optn m-0 p-0" value="S7">5:30 to 7:00 PM</option>
+      </select>
+    
+      <input type="hidden" name="course" value="<%= courseCo %>">
+      <input type="hidden" name="dateM" value="<%= dateP%>">
+      <input type="file" id="excel_file">
+    
+      <button class="btn btn-dark" type="submit" name="button"">Submit</button>
+    
+      <div id = "excel_data">
+        <input type="hidden" id="success" name="data" value="hiii">
+      </div>
+    
+    </form>    
   </div>
-</form>
+  <div class="col-6">
+    <form action="/faculty/<%= dateP%>/<%= courseCo%>/attendance" method="post">
+      <input type="hidden" name="course" value="<%= courseCo %>">
+      <input type="hidden" name="d" value="<%= dateP%>">
+      <input type="date" name="dateNew" value="01-05-2022">
+      <button class="btn btn-dark" type="submit" name="button">Modify</button>
+    </form>
+  </div>
+</div>
 
-<form action="/faculty/<%= dateP%>/<%= courseCo%>/attendance" method="post">
-  <input type="hidden" name="course" value="<%= courseCo %>">
-  <input type="hidden" name="d" value="<%= dateP%>">
-  <input type="date" name="dateNew" value="01-05-2022">
-  <button class="btn btn-dark" type="submit" name="button">Modify</button>
-</form>
-<br>
-<br>
+
+
 
 
 <% if(c){ %>

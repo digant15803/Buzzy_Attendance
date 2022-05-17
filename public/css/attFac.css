@@ -2,6 +2,15 @@
     text-align: center;
 }
 
+.optn:hover{
+    background-color: gray !important;
+    color: green !important;
+}
+
+.optn:focus{
+    background-color: gray !important;
+}
+
 .boxe{
     padding: 0% 4% !important;
 }
