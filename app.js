@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 const mysql = require('mysql');
 
 const con = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSEORD,
-  database: process.env.DATABASE
+  host: "localhost",
+  user: "root",
+  password: "password",
+  database: "mydb"
 });
 
 app.use(session({

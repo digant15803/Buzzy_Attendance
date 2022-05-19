@@ -1,7 +1,7 @@
 <%- include('partials/navbarFac') -%>
 
-<div class="row p-3">
-  <div class="col-6"> 
+<div class="row p-3" style="border-bottom: solid 2px;">
+  <div class="col-4" style="text-align: center;">   
     <form action="/faculty/markAttendance" method="post">
       <select id="shift" style="height: 30px;">
         <option class="optn m-0 p-0" value="S1">8:00 to 9:30 AM</option>
@@ -15,70 +15,77 @@
     
       <input type="hidden" name="course" value="<%= courseCo %>">
       <input type="hidden" name="dateM" value="<%= dateP%>">
-      <input type="file" id="excel_file">
-    
-      <button class="btn btn-dark" type="submit" name="button"">Submit</button>
-    
-      <div id = "excel_data">
+      <input type="file" id="excel_file" style="max-width: 230px;">
+      
+        <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Submit</button>
+        <div id = "excel_data">
         <input type="hidden" id="success" name="data" value="hiii">
       </div>
     
     </form>    
   </div>
-  <div class="col-6">
+  <div class="col-4" style="text-align: right;">
     <form action="/faculty/<%= dateP%>/<%= courseCo%>/attendance" method="post">
       <input type="hidden" name="course" value="<%= courseCo %>">
       <input type="hidden" name="d" value="<%= dateP%>">
       <input type="date" name="dateNew" value="01-05-2022">
-      <button class="btn btn-dark" type="submit" name="button">Modify</button>
+      <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Modify</button>
+    </form>
+  </div>
+  <div class="col-4" style="text-align: right;">
+    <form action="/faculty/markAttendance" method="post">
+      <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Reset</button>
+      <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Mark all present</button>
     </form>
   </div>
 </div>
 
 
+<div class="mt-3">
+  <% if(c){ %>
+    <div class="row border-bottom border-3">
+        <div class="col-6">
+            <p class="m-3 top-content">Present Students : <%= ps%> / <%= noOfS%> </p>
+            <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
+        </div>
+        <div class="col-6">
+            <p class="m-3 top-content" style="float: right;">Date : <%= dateP %></p>
+            <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
+        </div>
+    </div>
+  
+  
+  
+    <div class="row text-center p-3" style="justify-content: center;">
+      <% students.forEach(function(student){ %>
+        <div class="col-sm-6 boxe">
+            <div class="row text-center border border-dark rounded shadow mt-2 atdce">
+                <div class="col-4">
+                    <p class="ctnt"><%= student.studname%></p>
+                </div>
+                <div class="col-4">
+                    <p class="ctnt"><%= student.enrolnoD%></p>
+                </div>
+                <div class="col-4">
+                  <% if(attMap.get(student.enrolnoD) == 1){ %>
+                    <p class="ctnt text-success">Present</p>
+                  <% } else{%>
+                    <p class="ctnt text-danger">Absent</p>
+                  <% } %>
+  
+                </div>
+            </div>
+        </div>
+  
+      <% }) %>
+    </div>
+  <% }else{ %>
+    <h3>No Data Found</h3>
+  <% } %>
+  
+</div>
 
 
-
-<% if(c){ %>
-  <div class="row border-bottom border-3">
-      <div class="col-6">
-          <p class="m-3 top-content">Present Students : <%= ps%> / <%= noOfS%> </p>
-          <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
-      </div>
-      <div class="col-6">
-          <p class="m-3 top-content" style="float: right;">Date : <%= dateP %></p>
-          <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
-      </div>
-  </div>
-
-
-
-  <div class="row text-center p-3" style="justify-content: center;">
-    <% students.forEach(function(student){ %>
-      <div class="col-sm-6 boxe">
-          <div class="row text-center border border-dark rounded shadow mt-2 atdce">
-              <div class="col-4">
-                  <p class="ctnt"><%= student.studname%></p>
-              </div>
-              <div class="col-4">
-                  <p class="ctnt"><%= student.enrolnoD%></p>
-              </div>
-              <div class="col-4">
-                <% if(attMap.get(student.enrolnoD) == 1){ %>
-                  <p class="ctnt text-success">Present</p>
-                <% } else{%>
-                  <p class="ctnt text-danger">Absent</p>
-                <% } %>
-
-              </div>
-          </div>
-      </div>
-
-    <% }) %>
-  </div>
-<% }else{ %>
-  <h3>No Data Found</h3>
-<% } %>
 
 
 

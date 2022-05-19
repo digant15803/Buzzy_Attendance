@@ -4,11 +4,10 @@
 
 .optn:hover{
     background-color: gray !important;
-    color: green !important;
 }
 
 .optn:focus{
-    background-color: gray !important;
+    background-color: #363740 !important;
 }
 
 .boxe{
