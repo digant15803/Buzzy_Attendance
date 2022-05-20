@@ -21,7 +21,7 @@ body{
 
 .sign-up{
     background-color: #222831;
-    color: white;
+    color: #EEEEEE;
     text-align: center;
     display: inline-block;
     width: 55%;
@@ -30,7 +30,7 @@ body{
 }
 
 .sign-in{
-    background-color: white;
+    background-color: #EEEEEE;
     text-align: center;
     display: inline-block;
     width: 45%;
@@ -46,10 +46,10 @@ body{
     position: relative;
     margin-top: 20%;
     margin-left: 25%;
-    color: white;
+    color: #EEEEEE;
     font-size: small;
     padding: 15px;
-    color: #363740;
+    color: #222831;
 }
 
 .text-box{
@@ -60,14 +60,14 @@ body{
 }
 
 .btn-outline-danger{
-    color: #363740 !important;
-    border-color: #363740 !important;
+    color: #222831 !important;
+    border-color: #222831 !important;
     padding: 0%;
 }
 
 .btn-outline-danger:hover{
-    background-color: #363740 !important;
-    color: white !important;
+    background-color: #222831 !important;
+    color: #EEEEEE !important;
 }
 
 .logo{

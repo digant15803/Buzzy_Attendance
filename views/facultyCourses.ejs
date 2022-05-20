@@ -2,29 +2,32 @@
 
 <div class="row" >
   <% courses.forEach(function(course){ %>
-    <div class=" col-xl-4 col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 2%">
+    <div class=" col-xl-4 col-lg-4 col-md-6 col-sm-12">
         <div class="facBox">
             <div class="box-top-fac facTop">
-                <a class="textdec h4" href="/faculty/<%= course.coursecode%>" style="color: #000000"><%= course.coursecode%>: <%=course.coursename%></a>
+                <a class="textdec h4" href="/faculty/<%= course.coursecode%>" style="color: #222831"><%= course.coursecode%>: <%=course.coursename%></a>
             </div>
             <form action="/faculty" method="post">
             <div class="facMid d-flex align-items-center">
 
-                <span>Date: </span><input type="date" name="date" value="2022-05-01">
+                <span style="margin-right: 2.5%;"><strong>Date:</strong></span>
+                <input type="date" name="date" value="2022-05-01">
                 <input type="hidden" name="courseCode" value="<%= course.coursecode%>">
 
             </div>
             <div class="row facBot">
-              <div class="col d-flex justify-content-around align-items-center">
-                <button type="submit" name="submit" value="b" class="btn btn-dark">BuzzWords</button>
-              </div>
-              <div class="col d-flex justify-content-around align-items-center">
-                <button type="submit" name="submit" value="a" class="btn btn-dark">Attendance</button>
-              </div>
+                <div class="col">
+                  <button type="submit" name="submit" value="b" class="btn btn-dark shadow-none">BuzzWords</button>
+                </div>
+                <div class="col">
+                  <button type="submit" name="submit" value="a" class="btn btn-dark shadow-none">Attendance</button>
+                </div>
             </div>
             </form>
         </div>
     </div>
   <% }) %>
+
 </div>
+
 <%- include('partials/footer') %>
