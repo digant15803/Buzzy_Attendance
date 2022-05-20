@@ -5,7 +5,7 @@
       <div class="col-lg-6">
 
 
-      <div style="width: 50%; background-color: #222831; border-radius: 20px;">
+      <div style="width: 50%; background-color: #222831; border-radius: 20px; margin-left: 215px;">
         <div id="heading" style="color: white; border-bottom: 3px solid white; text-align: center; margin-top: 10px;">
           <h3 style="padding-top: 3%">Correct</h3>
         </div>
@@ -23,11 +23,11 @@
               <div style="text-align: center;">
                 <form action="/faculty/<%= courseCode%>" class="check-fac" method="post">
                   <div class="w-100" style="">
-                    <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: white;">
+                    <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: white;" autocomplete="off">
                   </div>
                   <div style=" margin: 0;">
                     <input type="hidden" name="hidden" value="<%= courseCode%>">
-                    <button type="submit" name="list" value="correct" class="facultIN btn btn-light">+</button>
+                    <button type="submit" name="list" value="correct" class="facultIN btn btn-light"><strong>+</strong></button>
                   </div>
                 </form>
               </div>
@@ -36,13 +36,13 @@
       </div>
       <div class="col-lg-6">
       <div style="width: 50%; background-color: #363740; border-radius: 20px; margin-left: 215px;">
-        <div id="heading" style="color: white; border-bottom: 3px solid white; text-align: center; margin-top: 10px;">
+        <div id="heading" style="color: #EEEEEE; border-bottom: 3px solid #EEEEEE; text-align: center; margin-top: 10px;">
           <h3 style="padding-top: 3%">Incorrect</h3>
         </div>
         <div style="margin-top: 13px;">
           <%incorrectList.forEach(function(list){ %>
             <div style="margin-bottom: 2px; text-align: center;">
-              <label class="form-check-label h6" for="flexCheckDefault" style="color: white;">
+              <label class="form-check-label h6" for="flexCheckDefault" style="color: #EEEEEE;">
                 <%= list %>
               </label>
             </div>
@@ -50,7 +50,7 @@
               <div style="text-align: center;">
                 <form action="/faculty/<%= courseCode%>" class="check-fac" method="post">
                   <div class="w-100" style="">
-                    <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: white;">
+                    <input type="text" class="in-text" name="newItem" placeholder="New BUZZWORD" style="width: 80%; text-align: center; color: #EEEEEE;">
                   </div>
                   <div style=" margin: 0;">
                     <input type="hidden" name="hidden" value="<%= courseCode%>">
