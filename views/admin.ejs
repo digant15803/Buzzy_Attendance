@@ -1,0 +1,84 @@
+<%- include('partials/header') -%>
+<h4>Remove course</h4>
+<form action="/admin/removeCourse" method="post">
+  <select name="courseCode" style="height: 30px;">
+    <% courseDetails.forEach(function(course){ %>
+      <option class="optn m-0 p-0" value="<%=course.coursecode%>"><%=course.coursecode%>: <%=course.coursename%></option>
+    <% }) %>
+  </select>
+
+  <button type="submit" class="btn btn-dark">Remove Course</button>
+</form>
+<h4>Add new course</h4>
+<form action="/admin/addCourse" method="post">
+  <input type="text" name="courseCode" placeholder="Course Code">
+  <input type="text" name="courseName" placeholder="Course Name">
+  <select name="facId" style="height: 30px;">
+    <% facultyDetails.forEach(function(faculty){ %>
+      <option class="optn m-0 p-0" value="<%= faculty.facid%>"><%= faculty.facid%>: <%= faculty.name%></option>
+    <% }) %>
+  </select>
+  <button type="submit" class="btn btn-dark">Add Course</button>
+</form>
+
+<h4>Add Students to course</h4>
+
+<form action="/admin/addStudents" method="post">
+  <select name="courseCode" style="height: 30px;">
+    <% courseDetails.forEach(function(course){ %>
+      <option class="optn m-0 p-0" value="<%=course.coursecode%>"><%=course.coursecode%>: <%=course.coursename%></option>
+    <% }) %>
+  </select>
+
+  <input type="file" id="excel_file" style="max-width: 230px;">
+  <input type="hidden" id="success" name="data" value="hiii">
+  <button type="submit" class="btn btn-dark">Enrol Students</button>
+</form>
+
+<h4>Create Account</h4>
+
+<form action="/admin/createAcc" method="post">
+  <select name="type" style="height: 30px;">
+    <option class="optn m-0 p-0" value="0">Student</option>
+    <option class="optn m-0 p-0" value="1">Faculty</option>
+  </select>
+
+  <input type="text" name="emailid" placeholder="Email Id">
+  <input type="text" name="id" placeholder="Id Number">
+  <input type="text" name="name" placeholder="Name">
+
+  <button type="submit" class="btn btn-dark">Create Account</button>
+</form>
+
+
+
+
+<script type="text/javascript">
+  const excel_file = document.getElementById('excel_file');
+
+  excel_file.addEventListener('change',(event)=>{
+    var reader = new FileReader();
+
+    reader.readAsArrayBuffer(event.target.files[0]);
+
+    reader.onload = function(event){
+      var data = new Uint8Array(reader.result);
+      var work_book = XLSX.read(data,{type:'array'});
+
+      var sheet_name = work_book.SheetNames;
+
+      var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
+
+      if(sheet_data.length>0){
+        var table_output = "";
+
+          for(var row=1;row<sheet_data.length;row++){
+            table_output+=sheet_data[row][0]+',';
+          }
+
+          document.getElementById('success').value = table_output;
+      }
+    }
+  });
+</script>
+<%- include('partials/footer') -%>

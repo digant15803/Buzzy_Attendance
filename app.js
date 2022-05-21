@@ -23,10 +23,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 const mysql = require('mysql');
 
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "mydb"
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
 });
 
 app.use(session({
@@ -75,7 +76,7 @@ passport.use('local', new LocalStrategy({
 			 if (err)
           return done(err);
 			 if (!rows.length) {
-                return done(null, false,req.flash('loginMessage', 'Oops! Username does not exist.'));
+                return done(null, false,req.flash('loginMessage', 'Oops! EmailID does not exist.'));
             }
 			// if the user is found but the password is wrong
             if (!( rows[0].password == password))
@@ -101,14 +102,203 @@ app.get("/",function(req, res){
   failureFlash : true
 }));
 
+app.get("/changePassword",function(req,res){
+  res.render("changePwd",{message: req.flash('message')});
+});
+
+app.post("/changePassword",function(req,res){
+  let email = req.body.email;
+  let oldPwd = req.body.oldPassword;
+  let newPwd1 = req.body.newPassword1;
+  let newPwd2 = req.body.newPassword2;
+
+  if(newPwd1 != newPwd2){
+    req.flash('message','Oops! Entered new passwords are not same');
+    res.redirect("/changePassword");
+  }
+  else if(true){
+    con.query("SELECT * FROM (SELECT * FROM mydb.facuser UNION SELECT * FROM mydb.studentdata) a WHERE a.emailid like (?)",email,function(err,result){
+      if (err) throw err;
+
+      if (!result.length){
+        req.flash('message', 'Oops! Username does not exist.');
+        res.redirect("/changePassword");
+      }
+      else if(result[0].password != oldPwd){
+        req.flash('message', 'Oops! Old password is incorrect.');
+        res.redirect("/changePassword");
+      }
+      else{
+        if(result[0].tf == 0){
+          con.query("UPDATE studentdata SET password = ? WHERE email = ?",[newPwd1,email],function(err,result){
+            if (err) throw err;
+
+            res.redirect("/");
+          });
+        }
+        else{
+          con.query("UPDATE facuser SET password = ? WHERE email = ?",[newPwd1,email],function(err,result){
+            if (err) throw err;
+
+            res.redirect("/");
+          });
+        }
+      }
+
+    });
+  }
+});
+
+
 app.get("/timepass",function(req,res){
-  if(req.user.tf === 0){
+  if(req.user.emailid == "admin@ahduni.edu.in"){
+    res.redirect("/admin");
+  }
+  else if(req.user.tf === 0){
     res.redirect("/student");
   }
   else{
     res.redirect("/faculty");
   }
 });
+
+
+
+app.get("/admin",function(req,res){
+  if(req.isAuthenticated()){
+    let courses;
+    let facDetails;
+    con.query("SELECT * FROM courses",function(err,result){
+      if (err) throw err;
+
+      courses = result;
+
+      con.query("SELECT * FROM facultydetails",function(err,result){
+        if (err) throw err;
+
+        facDetails = result;
+        res.render("admin",{courseDetails: courses ,facultyDetails: facDetails});
+      });
+
+
+    });
+  }
+  else{
+    res.redirect("/");
+  }
+
+});
+
+app.post("/admin/removeCourse",function(req,res){
+  if(req.isAuthenticated()){
+    let courseCode = req.body.courseCode;
+    con.query("DELETE FROM session WHERE cCode = ?",courseCode,function(err,result){
+      if (err) throw err;
+
+      con.query("DELETE FROM attendance WHERE courseC = ?",courseCode,function(err,result){
+        if (err) throw err;
+
+        con.query("DELETE FROM enroledin WHERE coursecode = ?",courseCode,function(err,result){
+          if (err) throw err;
+
+          con.query("DELETE FROM courses WHERE coursecode = ?",courseCode,function(err,result){
+            if (err) throw err;
+
+            res.redirect("/admin");
+          });
+        });
+      });
+    });
+  }
+  else{
+    res.redirect("/");
+  }
+
+});
+
+app.post("/admin/addCourse",function(req,res){
+  if(req.isAuthenticated()){
+    let courseCode = req.body.courseCode;
+    let courseName = req.body.courseName;
+    let facultyId = req.body.facId;
+
+    con.query("INSERT INTO courses VALUES(?,?,?)",[courseCode,courseName,facultyId],function(err,result){
+      if (err) throw err;
+
+      res.redirect("/admin");
+    });
+  }
+  else{
+    res.redirect("/");
+  }
+
+});
+
+app.post("/admin/addStudents",function(req,res){
+  if(req.isAuthenticated()){
+    let names = req.body.data;
+    let courseCode = req.body.courseCode;
+    let arrays = names.split(",");
+    arrays.pop();
+    console.log(arrays);
+    arrays.forEach(function(array){
+      con.query("INSERT INTO enroledin VALUES(?,?)",[array,courseCode],function(err,result){
+        if (err) throw err;
+
+
+      });
+    });
+
+    res.redirect("/admin");
+  }
+  else{
+    res.redirect("/");
+  }
+
+
+
+});
+
+app.post("/admin/createAcc",function(req,res){
+  if(req.isAuthenticated()){
+    let type = req.body.type;
+    let emailid = req.body.emailid;
+    let id = req.body.id;
+    let name = req.body.name;
+
+    if(type == "0"){
+      con.query("INSERT INTO studentdata VALUES(?,default,?,0,?)",[emailid,id,name],function(err,result){
+        if (err) throw err;
+
+        res.redirect("/admin");
+      });
+    }
+    else{
+      con.query("INSERT INTO facuser VALUES(?,default,?,1,?)",[emailid,id,name],function(err,result){
+        if (err) throw err;
+
+        con.query("INSERT INTO facultydetails VALUES(?,?)",[id,name],function(err,result){
+          if (err) throw err;
+
+          res.redirect("/admin");
+        });
+
+
+      });
+    }
+  }
+  else{
+    res.redirect("/");
+  }
+
+});
+
+
+
+
+
+
+
 
 app.get("/logout", function(req, res){
   req.logout();
@@ -294,14 +484,12 @@ app.get("/student/:courseCode/attendance",function(req,res){
     con.query("SELECT DATE(date_time) time FROM session WHERE cCode = ? AND tbool = 1",req.params.courseCode,function(err,result){
       if (err) throw err;
 
-      console.log(result);
       result.forEach(function(temp){
           dateMap.set(temp.time.toDateString(),0);
           dates.push(temp.time.toDateString());
           tCount = tCount+1;
       });
 
-      console.log(dates);
       con.query("SELECT DATE(sessionDate) time,finalattendance FROM attendance WHERE enrolmentno = ? and courseC = ?",[req.user.facultyid,req.params.courseCode],function(err,result){
         if(err) throw err;
 
@@ -345,13 +533,37 @@ app.get("/student/:courseCode/attendance",function(req,res){
 
 ////////////////////////////////////////////////////////////////////      Faculty       ////////////////////////////////////////////////////////
 
+
+app.post("/addStudent",function(req,res){
+  let enrollmentNo = req.body.enrollmentNo;
+  let courseCode = req.body.courseCode;
+
+  con.query("SELECT * FROM studentdata WHERE enrolno = ?",enrollmentNo,function(err,result){
+    if (err) throw err;
+    if(!result.length){
+      req.flash('Message','Oops! Student not exist.');
+      res.redirect("/faculty");
+    }
+    else{
+      con.query("INSERT INTO enroledin VALUES(?,?)",[enrollmentNo,courseCode],function(err,result){
+        if (err) throw err;
+
+        req.flash('Message','Student enrolled in the course.');
+        res.redirect("/faculty");
+      });
+    }
+  });
+
+});
+
+
 app.get("/faculty",function(req,res){
   if(req.isAuthenticated()){
     let sql = "SELECT * FROM courses NATURAL JOIN facultydetails where facid = (?)";
     con.query(sql,req.user.facultyid, function (err, result) {
       if (err) throw err;
 
-      res.render("facultyCourses",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: result, headingVariable: "Courses"});
+      res.render("facultyCourses",{message: req.flash('Message') ,enrolnofa: req.user.facultyid, name: req.user.facname, courses: result, headingVariable: "Courses"});
     });
 
   }
@@ -716,6 +928,35 @@ app.post("/faculty/:date/:courseCode",function(req,res){
     res.redirect("/");
   }
 });
+
+
+
+
+app.post("/faculty/:date/:courseCode/reset",function(req,res){
+  if(req.isAuthenticated()){
+    con.query("UPDATE attendance SET biometricattendance = 0 WHERE courseC = ? AND sessionDate = DATE(?)",[req.body.course,req.body.d],function(err,result){
+      res.redirect("/faculty/"+req.body.d+"/"+req.body.course+"/attendance");
+    });
+  }
+  else{
+    res.redirect("/");
+  }
+
+});
+
+app.post("/faculty/:date/:courseCode/allPresent",function(req,res){
+  if(req.isAuthenticated()){
+    con.query("UPDATE attendance SET biometricattendance = 1,buzzattendance = 1 WHERE courseC = ? AND sessionDate = DATE(?)",[req.body.course,req.body.d],function(err,result){
+      res.redirect("/faculty/"+req.body.d+"/"+req.body.course+"/attendance");
+    });
+  }
+  else{
+    res.redirect("/");
+  }
+
+});
+
+
 
 
   //////////////////////////               Shuffle function            ////////////////////////////////////////////////////////////////////

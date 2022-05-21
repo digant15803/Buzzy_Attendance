@@ -1,5 +1,8 @@
 <%- include('partials/navbarFac') %>
-
+<br>
+<% if (message.length > 0) { %>
+    <p class="mt-1 text-danger"><%= message %>
+<% } %>
 <div class="row" >
   <% courses.forEach(function(course){ %>
     <div class=" col-xl-4 col-lg-4 col-md-6 col-sm-12">
@@ -23,6 +26,12 @@
                   <button type="submit" name="submit" value="a" class="btn btn-dark shadow-none">Attendance</button>
                 </div>
             </div>
+            </form>
+
+            <form action="/addStudent" method="post">
+              <input type="text" name="enrollmentNo">
+              <input type="hidden" name="courseCode" value="<%= course.coursecode%>">
+              <button type="submit" class="facultIN btn btn-light">+</button>
             </form>
         </div>
     </div>

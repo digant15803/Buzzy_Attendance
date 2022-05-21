@@ -1,7 +1,7 @@
 <%- include('partials/navbarFac') -%>
 
 <div class="row p-3" style="border-bottom: solid 2px;">
-  <div class="col-4" style="text-align: center;">   
+  <div class="col-4" style="text-align: center;">
     <form action="/faculty/markAttendance" method="post">
       <select id="shift" style="height: 30px;">
         <option class="optn m-0 p-0" value="S1">8:00 to 9:30 AM</option>
@@ -12,17 +12,17 @@
         <option class="optn m-0 p-0" value="S6">4:00 to 5:30 PM</option>
         <option class="optn m-0 p-0" value="S7">5:30 to 7:00 PM</option>
       </select>
-    
+
       <input type="hidden" name="course" value="<%= courseCo %>">
       <input type="hidden" name="dateM" value="<%= dateP%>">
       <input type="file" id="excel_file" style="max-width: 230px;">
-      
+
         <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Submit</button>
         <div id = "excel_data">
         <input type="hidden" id="success" name="data" value="hiii">
       </div>
-    
-    </form>    
+
+    </form>
   </div>
   <div class="col-4" style="text-align: right;">
     <form action="/faculty/<%= dateP%>/<%= courseCo%>/attendance" method="post">
@@ -33,10 +33,18 @@
     </form>
   </div>
   <div class="col-4" style="text-align: right;">
-    <form action="/faculty/markAttendance" method="post">
+    <form action="/faculty/<%= dateP%>/<%= courseCo %>/reset" method="post">
+      <input type="hidden" name="course" value="<%= courseCo %>">
+      <input type="hidden" name="d" value="<%= dateP%>">
       <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Reset</button>
+    </form>
+    <form action="/faculty/<%= dateP%>/<%= courseCo %>/allPresent" method="post">
+      <input type="hidden" name="course" value="<%= courseCo %>">
+      <input type="hidden" name="d" value="<%= dateP%>">
       <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Mark all present</button>
     </form>
+
+
   </div>
 </div>
 
@@ -53,9 +61,9 @@
             <!-- <p class="font-bold" style="float: right;">Present Students : 3</p> -->
         </div>
     </div>
-  
-  
-  
+
+
+
     <div class="row text-center p-3" style="justify-content: center;">
       <% students.forEach(function(student){ %>
         <div class="col-sm-6 boxe">
@@ -72,17 +80,17 @@
                   <% } else{%>
                     <p class="ctnt text-danger">Absent</p>
                   <% } %>
-  
+
                 </div>
             </div>
         </div>
-  
+
       <% }) %>
     </div>
   <% }else{ %>
     <h3>No Data Found</h3>
   <% } %>
-  
+
 </div>
 
 
