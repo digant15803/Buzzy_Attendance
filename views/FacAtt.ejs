@@ -24,7 +24,7 @@
 
     </form>
   </div>
-  <div class="col-4" style="text-align: right;">
+  <div class="col-4 p-0" style="text-align: right;">
     <form action="/faculty/<%= dateP%>/<%= courseCo%>/attendance" method="post">
       <input type="hidden" name="course" value="<%= courseCo %>">
       <input type="hidden" name="d" value="<%= dateP%>">
@@ -32,19 +32,22 @@
       <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Modify</button>
     </form>
   </div>
-  <div class="col-4" style="text-align: right;">
-    <form action="/faculty/<%= dateP%>/<%= courseCo %>/reset" method="post">
-      <input type="hidden" name="course" value="<%= courseCo %>">
-      <input type="hidden" name="d" value="<%= dateP%>">
-      <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Reset</button>
-    </form>
+  <div class="col-3 p-0" style="text-align: right;">
+    <!-- <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Reset</button>
+    <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Mark all Present</button> -->
     <form action="/faculty/<%= dateP%>/<%= courseCo %>/allPresent" method="post">
       <input type="hidden" name="course" value="<%= courseCo %>">
       <input type="hidden" name="d" value="<%= dateP%>">
       <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Mark all present</button>
     </form>
-
-
+    
+    </div>
+    <div class="col-1 p-0" style="text-align: right;">
+      <form action="/faculty/<%= dateP%>/<%= courseCo %>/reset" method="post">
+        <input type="hidden" name="course" value="<%= courseCo %>">
+        <input type="hidden" name="d" value="<%= dateP%>">
+        <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Reset</button>
+      </form>
   </div>
 </div>
 
