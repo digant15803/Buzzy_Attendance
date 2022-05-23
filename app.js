@@ -240,7 +240,6 @@ app.post("/admin/addStudents",function(req,res){
     let courseCode = req.body.courseCode;
     let arrays = names.split(",");
     arrays.pop();
-    console.log(arrays);
     arrays.forEach(function(array){
       con.query("INSERT INTO enroledin VALUES(?,?)",[array,courseCode],function(err,result){
         if (err) throw err;
@@ -538,21 +537,41 @@ app.post("/addStudent",function(req,res){
   let enrollmentNo = req.body.enrollmentNo;
   let courseCode = req.body.courseCode;
 
-  con.query("SELECT * FROM studentdata WHERE enrolno = ?",enrollmentNo,function(err,result){
-    if (err) throw err;
-    if(!result.length){
-      req.flash('Message','Oops! Student not exist.');
-      res.redirect("/faculty");
-    }
-    else{
-      con.query("INSERT INTO enroledin VALUES(?,?)",[enrollmentNo,courseCode],function(err,result){
-        if (err) throw err;
-
-        req.flash('Message','Student enrolled in the course.');
+  if(req.body.addrmv == "add"){
+    con.query("SELECT * FROM studentdata WHERE enrolno = ?",enrollmentNo,function(err,result){
+      if (err) throw err;
+      if(!result.length){
+        req.flash('Message','Oops! Student not exist.');
         res.redirect("/faculty");
-      });
-    }
-  });
+      }
+      else{
+        con.query("INSERT INTO enroledin VALUES(?,?)",[enrollmentNo,courseCode],function(err,result){
+          if (err) throw err;
+
+          req.flash('Message','Student enrolled in the course.');
+          res.redirect("/faculty");
+        });
+      }
+    });
+  }
+  else{
+    con.query("SELECT * FROM studentdata WHERE enrolno = ?",enrollmentNo,function(err,result){
+      if (err) throw err;
+      if(!result.length){
+        req.flash('Message','Oops! Student not exist.');
+        res.redirect("/faculty");
+      }
+      else{
+        con.query("DELETE FROM enroledin WHERE enrolnoD = ? AND coursecode = ?",[enrollmentNo,courseCode],function(err,result){
+          if (err) throw err;
+
+          req.flash('Message','Student removed from the course.');
+          res.redirect("/faculty");
+        });
+      }
+    });
+  }
+
 
 });
 
@@ -773,11 +792,9 @@ app.post("/faculty/:courseCode",function(req,res){
                 }
                 else{
                   fBuzz+=item+",";
-                  console.log(fBuzz);
                   con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[fBuzz,req.body.hidden], function (err, result) {
                     if (err) throw err;
 
-                    console.log("vghbjm");
                   });
                 }
               }
@@ -788,11 +805,9 @@ app.post("/faculty/:courseCode",function(req,res){
                 }
                 else{
                   tBuzz+=item+",";
-                  console.log(tBuzz);
                   con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[tBuzz,req.body.hidden], function (err, result) {
                     if (err) throw err;
 
-                    console.log("vghbjm");
                   });
                 }
               }
