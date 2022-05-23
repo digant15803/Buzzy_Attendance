@@ -18,21 +18,22 @@
                 <input type="hidden" name="courseCode" value="<%= course.coursecode%>">
 
             </div>
-            <div class="row facBot">
-                <div class="col">
+            <div class="row facMid m-0">
+                <div class="col-6">
                   <button type="submit" name="submit" value="b" class="btn btn-dark shadow-none">BuzzWords</button>
                 </div>
-                <div class="col">
+                <div class="col-6">
                   <button type="submit" name="submit" value="a" class="btn btn-dark shadow-none">Attendance</button>
                 </div>
             </div>
             </form>
-
-            <form action="/addStudent" method="post">
-              <input type="text" name="enrollmentNo">
-              <input type="hidden" name="courseCode" value="<%= course.coursecode%>">
-              <button type="submit" class="facultIN btn btn-light">+</button>
-            </form>
+            <div class="row facBot m-0 p-0">
+              <form action="/addStudent" method="post">
+                <input type="text" name="enrollmentNo">
+                <input type="hidden" name="courseCode" value="<%= course.coursecode%>">
+                <button type="submit" class="facultIN btn btn-light">+</button>
+              </form>
+            </div>
         </div>
     </div>
   <% }) %>
