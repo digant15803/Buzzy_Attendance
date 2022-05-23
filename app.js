@@ -662,7 +662,7 @@ app.post("/faculty/markAttendance",function(req,res){
     });
   });
 
-  res.redirect("/faculty");
+  res.redirect("/faculty/"+date+"/"+course+"/attendance");
 
 });
 
@@ -773,8 +773,11 @@ app.post("/faculty/:courseCode",function(req,res){
                 }
                 else{
                   fBuzz+=item+",";
+                  console.log(fBuzz);
                   con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[fBuzz,req.body.hidden], function (err, result) {
                     if (err) throw err;
+
+                    console.log("vghbjm");
                   });
                 }
               }
@@ -785,8 +788,11 @@ app.post("/faculty/:courseCode",function(req,res){
                 }
                 else{
                   tBuzz+=item+",";
+                  console.log(tBuzz);
                   con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[tBuzz,req.body.hidden], function (err, result) {
                     if (err) throw err;
+
+                    console.log("vghbjm");
                   });
                 }
               }
