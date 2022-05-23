@@ -1,25 +1,23 @@
 <%- include('partials/header') %>
 
-    <div class="row">
-        <div class="col-lg-7 col-sm-12 sign-up">
+    <div class="row m-0 imptt">
+        <div class="col-lg-7 col-md-6 col-sm-12 sign-up d-flex align-items-center justify-content-center">
     
             <div class="logo">
                 <img src="images/logo.png" alt="Company-logo">
-            </div>
-            <div class="">
-                <h3 class="mb-0 cursive">Buzzy Attendance</h3>
-                <p class="mt-0" style="color: gray;">Fast-forward the attendance process</p>
+                <h3 class="m-0 cursive">Buzzy Attendance</h3>
+                <p class="m-0 mb-4" style="color: gray;">Fast-forward the attendance process</p>
             </div>
         </div>
     
-        <div class="col-lg-5 col-sm-12 sign-in">
+        <div class="col-lg-5 col-md-6 col-sm-12 sign-in d-flex align-items-center justify-content-center">
             <div class="l-account">
-                <h4 class="cursive" style="margin-bottom: 10%;">Change your account password</h4>
+                <h4 class="cursive mb-4">Change your account password</h4>
                 <form action="/changePassword" method="post">
                     <div class="form-group">
                         <label class="h6 mb-1" style="float: left;">Email</label>
                         <input type="email" name="email" class="form-control text-box login shadow-none"
-                            id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Your Email">
+                            id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Your Email" autocomplete="off">
                     </div>
                     <div class="form-group mt-3">
                         <label class="h6 mb-1" style="float: left;">Old Password</label>

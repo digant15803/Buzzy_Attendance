@@ -2,7 +2,7 @@ img{
     width: 60%;
     height: 50%;
     position: relative;
-    margin-top: 50%;
+    /* margin-top: 50%; */
 }
 
 input:focus::placeholder{
@@ -14,9 +14,14 @@ body{
   font-family: 'Times New Roman', Times, serif !important;
 
 }
+
 .login::placeholder{
   font-family: 'Times New Roman', Times, serif;
   font-size: 90%;
+}
+
+.imptt{
+    height: 100vh;
 }
 
 .sign-up{
@@ -24,25 +29,28 @@ body{
     color: #EEEEEE;
     text-align: center;
     display: inline-block;
-    min-height: 100vh
+    /* height: auto; */
+    /* min-height: 97vh */
 }
 
 .sign-in{
     background-color: #EEEEEE;
     text-align: center;
     display: inline-block;
-    min-height: 100vh;
+    /* padding: 20% 10%; */
+    /* height: auto; */
+    /* min-height: 100vh; */
 }
 
 .l-account{
-    height: 60vh;
-    width: 50%;
-    position: relative;
-    margin-top: 20%;
-    margin-left: 25%;
+    /* height: 60vh; */
+    /* width: 50%; */
+    /* position: relative; */
+    /* margin: 27.5% 25%; */
+    /* margin-left: 25%; */
     color: #EEEEEE;
-    font-size: small;
-    padding: 15px;
+    /* font-size: small; */
+    /* padding: 15px; */
     color: #222831;
 }
 
