@@ -40,7 +40,7 @@
       <input type="hidden" name="d" value="<%= dateP%>">
       <button class="btn btn-dark pt-0 pb-0" type="submit" name="button" style="margin-top: -2px; height: 30px;">Mark all present</button>
     </form>
-    
+
     </div>
     <div class="col-1 p-0" style="text-align: right;">
       <form action="/faculty/<%= dateP%>/<%= courseCo %>/reset" method="post">
@@ -128,22 +128,18 @@
         }else if(shift == "S3"){
           cell =7;
         }else if(shift == "S4"){
-          cell =8;
-        }else if(shift == "S5"){
           cell =9;
-        }else if(shift == "S6"){
+        }else if(shift == "S5"){
           cell =10;
+        }else if(shift == "S6"){
+          cell =14;
         }else if(shift == "S7"){
-          cell =11;
+          cell =15;
         }
           for(var row=13;row<sheet_data.length;row++){
             if(sheet_data[row][cell] == "1/1(100%)"){
               table_output+=sheet_data[row][1]+',';
             }
-
-              // for(var cell=vari;cell<sheet_data[row].length;cell++){
-              //
-              // }
           }
 
           document.getElementById('success').value = table_output;

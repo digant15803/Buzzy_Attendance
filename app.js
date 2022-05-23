@@ -655,7 +655,7 @@ app.post("/faculty/markAttendance",function(req,res){
 
   let sArray = data.split(",");
   sArray.pop();
-
+  console.log(sArray);
   sArray.forEach(function(enrl){
     con.query("UPDATE attendance SET biometricattendance = true WHERE DATE(sessionDate) = DATE(?) AND enrolmentno = ? AND courseC = ?",[date,enrl,course],function(err,result){
       if(err) throw err;
@@ -693,7 +693,7 @@ app.get("/faculty/:courseCode",function(req,res){
           }
         }
 
-      res.render("facultyIn",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode});
+      res.render("facultyIn",{message: req.flash('msg'), enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode});
       });
 
     }
@@ -762,20 +762,33 @@ app.post("/faculty/:courseCode",function(req,res){
             }
           }
 
+          let afBuzz = fBuzz.split(",");
+          let atBuzz = tBuzz.split(",");
 
           if(req.body.list==="incorrect"){
               if(item!=""){
-                fBuzz+=item+",";
-                con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[fBuzz,req.body.hidden], function (err, result) {
-                  if (err) throw err;
-                });
+                if(afBuzz.includes(item) || atBuzz.includes(item)){
+                  req.flash('msg','Buzzword already exists.')
+                }
+                else{
+                  fBuzz+=item+",";
+                  con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[fBuzz,req.body.hidden], function (err, result) {
+                    if (err) throw err;
+                  });
+                }
+
               }
             }else{
               if(item!=""){
-                tBuzz+=item+",";
-                con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[tBuzz,req.body.hidden], function (err, result) {
-                  if (err) throw err;
-                });
+                if(afBuzz.includes(item) || atBuzz.includes(item)){
+                  req.flash('msg','Buzzword already exists.')
+                }
+                else{
+                  tBuzz+=item+",";
+                  con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(sysdate()) AND cCode = (?) AND tbool = '0'",[tBuzz,req.body.hidden], function (err, result) {
+                    if (err) throw err;
+                  });
+                }
               }
             }
             if(tBuzz != undefined ){
@@ -788,7 +801,7 @@ app.post("/faculty/:courseCode",function(req,res){
             }
 
 
-            res.render("facultyIn",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode});
+            res.render("facultyIn",{message: req.flash('msg'), enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode});
 
 
         });
@@ -840,7 +853,7 @@ app.get("/faculty/:date/:courseCode",function(req,res){
           }
         }
 
-      res.render("facultyInA",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode, dateP: d});
+      res.render("facultyInA",{message: req.flash('msg'), enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctList, incorrectList: incorrectList, courseCode: req.params.courseCode, dateP: d});
       });
 
     }
@@ -893,20 +906,34 @@ app.post("/faculty/:date/:courseCode",function(req,res){
           }
         }
 
+        let afBuzz = fBuzz.split(",");
+        let atBuzz = tBuzz.split(",");
 
         if(req.body.list==="incorrect"){
             if(item!=""){
-              fBuzz+=item+",";
-              con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(?) AND cCode = (?) AND tbool = '0'",[fBuzz,d,req.body.hidden], function (err, result) {
-                if (err) throw err;
-              });
+              if(afBuzz.includes(item) || atBuzz.includes(item)){
+                req.flash('msg','Buzzword already exists.')
+              }
+              else{
+                fBuzz+=item+",";
+                con.query("UPDATE session set fBuzz = ? WHERE DATE(date_time) = DATE(?) AND cCode = (?) AND tbool = '0'",[fBuzz,d,req.body.hidden], function (err, result) {
+                  if (err) throw err;
+                });
+              }
+
             }
           }else{
             if(item!=""){
-              tBuzz+=item+",";
-              con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(?) AND cCode = (?) AND tbool = '0'",[tBuzz,d,req.body.hidden], function (err, result) {
-                if (err) throw err;
-              });
+              if(afBuzz.includes(item) || atBuzz.includes(item)){
+                req.flash('msg','Buzzword already exists.')
+              }
+              else{
+                tBuzz+=item+",";
+                con.query("UPDATE session SET tBuzz = ? WHERE DATE(date_time) = DATE(?) AND cCode = (?) AND tbool = '0'",[tBuzz,d,req.body.hidden], function (err, result) {
+                  if (err) throw err;
+                });
+              }
+
             }
           }
           if(tBuzz != undefined ){
@@ -919,7 +946,7 @@ app.post("/faculty/:date/:courseCode",function(req,res){
           }
 
 
-          res.render("facultyInA",{enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode, dateP: d});
+          res.render("facultyInA",{message: req.flash('msg'), enrolnofa: req.user.facultyid, name: req.user.facname, courses: courseList ,headingVariable: "Enter BuzzWords", correctList: correctArr, incorrectList: incorrectArr, courseCode: req.params.courseCode, dateP: d});
 
 
       });
