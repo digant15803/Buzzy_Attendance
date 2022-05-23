@@ -1,50 +1,58 @@
 <%- include('partials/header') %>
 
-
-    <div class="sign-up">
-
-        <div class="logo">
-            <img src="images/logo.png" alt="Company-logo">
+    <div class="row">
+        <div class="col-lg-7 col-sm-12 sign-up">
+    
+            <div class="logo">
+                <img src="images/logo.png" alt="Company-logo">
+            </div>
+            <div class="">
+                <h3 class="mb-0 cursive">Buzzy Attendance</h3>
+                <p class="mt-0" style="color: gray;">Fast-forward the attendance process</p>
+            </div>
         </div>
-        <div class="">
-            <h3 class="mb-0 cursive">Buzzy Attendance</h3>
-            <p class="mt-0" style="color: gray;">Fast-forward the attendance process</p>
-        </div>
-  </div>
-
-        <div class="sign-in">
+    
+        <div class="col-lg-5 col-sm-12 sign-in">
             <div class="l-account">
                 <h4 class="cursive" style="margin-bottom: 10%;">Change your account password</h4>
                 <form action="/changePassword" method="post">
                     <div class="form-group">
                         <label class="h6 mb-1" style="float: left;">Email</label>
-                        <input type="email" name="email" class="form-control text-box login shadow-none" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="Your Email">
+                        <input type="email" name="email" class="form-control text-box login shadow-none"
+                            id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Your Email">
                     </div>
                     <div class="form-group mt-3">
                         <label class="h6 mb-1" style="float: left;">Old Password</label>
-                        <input type="password" name="oldPassword" class="form-control text-box login shadow-none" id="exampleInputPassword1" placeholder="Password">
+                        <input type="password" name="oldPassword" class="form-control text-box login shadow-none"
+                            id="exampleInputPassword1" placeholder="Password">
                     </div>
                     <div class="form-group mt-3">
                         <label class="h6 mb-1" style="float: left;">New Password</label>
-                        <input type="password" name="newPassword1" class="form-control text-box login shadow-none" id="exampleInputPassword1" placeholder="New Password">
+                        <input type="password" name="newPassword1" class="form-control text-box login shadow-none"
+                            id="exampleInputPassword1" placeholder="New Password">
                     </div>
                     <div class="form-group mt-3">
                         <label class="h6 mb-1" style="float: left;">Confirm New Password</label>
-                        <input type="password" name="newPassword2" class="form-control text-box login shadow-none" id="exampleInputPassword1" placeholder="Confirm New Password">
+                        <input type="password" name="newPassword2" class="form-control text-box login shadow-none"
+                            id="exampleInputPassword1" placeholder="Confirm New Password">
                     </div>
                     <br>
                     <div>
-                        <% if (message.length > 0) { %>
-                            <p class="mt-1 text-danger"><%= message %>
-                        <% } %>
+                        <% if (message.length> 0) { %>
+                            <p class="mt-1 text-danger">
+                                <%= message %>
+                                    <% } %>
                     </div>
-
-                    <button type="submit" class="btn btn-outline-danger text-box cursive" style="margin-top: 20px;">Change Password</button>
+    
+                    <button type="submit" class="btn btn-outline-danger text-box cursive" style="margin-top: 20px;">Change
+                        Password</button>
                 </form>
-
+    
             </div>
         </div>
-</body>
+    </div>
 
-</html>
+
+    </body>
+
+    </html>

@@ -24,8 +24,6 @@ body{
     color: #EEEEEE;
     text-align: center;
     display: inline-block;
-    width: 55%;
-    float: left;
     min-height: 100vh
 }
 
@@ -33,14 +31,10 @@ body{
     background-color: #EEEEEE;
     text-align: center;
     display: inline-block;
-    width: 45%;
-    height: 100%;
-    float: left;
     min-height: 100vh;
 }
 
 .l-account{
-    /* background-color: black; */
     height: 60vh;
     width: 50%;
     position: relative;
