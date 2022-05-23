@@ -26,7 +26,7 @@ body{
 
 .sign-up{
     background-color: #222831;
-    color: white;
+    color: #FFFFFF;
     text-align: center;
     display: inline-block;
     /* height: auto; */
@@ -34,7 +34,7 @@ body{
 }
 
 .sign-in{
-    background-color: white;
+    background-color: #FFFFFF;
     text-align: center;
     display: inline-block;
     /* padding: 20% 10%; */
@@ -48,7 +48,7 @@ body{
     /* position: relative; */
     /* margin: 27.5% 25%; */
     /* margin-left: 25%; */
-    color: #EEEEEE;
+    color: #FFFFFF;
     /* font-size: small; */
     /* padding: 15px; */
     color: #222831;
@@ -61,16 +61,19 @@ body{
     margin: 0%;
 }
 
-.btn-outline-danger{
-    color: #363740 !important;
-    border-color: #363740 !important;
-    padding: 0%;
+.buttn{
+    color: #fff !important;
+    font-size: small !important;
+    background-color: #222831 !important;
 }
 
-.btn-outline-danger:hover{
-    background-color: #363740 !important;
-    color: white !important;
+.buttn:hover{
+    border: #222831 solid 2px !important;
+    background-color: #FFFFFF !important;
+    font-size: small !important;
+    color: #222831 !important;
 }
+
 
 .logo{
     display: inline-block;
