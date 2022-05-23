@@ -61,6 +61,16 @@
         </div>
       </div>
       </div>
+
+      <% if (message.length> 0) { %>
+
+          <p class="d-flex justify-content-center text-danger">
+              <%= message %>
+                  <% } %>
+
+
+
+
 <form class="" action="/faculty/<%= courseCode%>" method="post">
       <div class="col-sm-12" style="text-align: center">
         <input type="hidden" name="hidden" value="<%= courseCode%>">
