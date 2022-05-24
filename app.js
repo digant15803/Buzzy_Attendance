@@ -137,7 +137,7 @@ app.post("/changePassword",function(req,res){
           });
         }
         else{
-          con.query("UPDATE facuser SET password = ? WHERE email = ?",[newPwd1,email],function(err,result){
+          con.query("UPDATE facuser SET password = ? WHERE emailid = ?",[newPwd1,email],function(err,result){
             if (err) throw err;
 
             res.redirect("/");
